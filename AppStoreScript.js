@@ -1,1 +1,0 @@
-document.getElementsByClassName("project").addEventListener("click", functionForProjectOpening());
