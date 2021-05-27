@@ -11,67 +11,78 @@
   <meta name="description" content="This is our web assignment in which we develope an app store for people to upload and download their projects"/>
   <meta name="keywords" content="WEB,projects,App,Store"/>
   
-  <!-- Вмъкване на външен css файл -->
-  <link href="index.css" rel="stylesheet">
+  <!-- Вмъкване на външен css файл, добавен е php код за да не зе кешира css файла, защото иначе колкото и да го променям сайта не го показва "That will add the current timestamp on the end of a file path, so it will always be unique and never loaded from cache."-->
+  <link href="index.css?<?php echo time(); ?>" rel="stylesheet">
   
   <!-- Вмъкване на jquery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   
   <!-- Вмъкване на външен javascript файл -->
-  <script src="index.js"></script>
+  <script src="index.js?<?php echo time(); ?>"></script>
+
 </head>
 <body>
   <h1> List of available projects</h1>
   
   <div id="projects">
   
+  <!-- php код за връзка с базата  -->
 <?php 
 
-    $serverName = "localhost";
-    $database = "appstoredb";
-	$user = "root";
-	$pass = "";
-    try {
-        $conn = new PDO(
-			//"sqlsrv:data source=$serverName;initial catalog=$database; Integrated Security=SSPI;", -> startError connecting to SQL Server: could not find driver
-            "mysql:host=$serverName;dbname=$database;",
-            $user,
-            $pass
-            
-        );
+  $serverName = "localhost";
+  $database = "appstoredb";
+  $user = "root";
+  $pass = "";
+  try {
+      $conn = new PDO(
+	  //"sqlsrv:data source=$serverName;initial catalog=$database; Integrated Security=SSPI;", -> startError connecting to SQL Server: could not find driver // това е за Microsoft sql но ми бъгва?
+      "mysql:host=$serverName;dbname=$database;",
+      $user,
+      $pass  
+      );
     }
-    catch(PDOException $e) {
-        die("Error connecting to SQL Server: " . $e->getMessage());
+  catch(PDOException $e) {
+      die("Error connecting to SQL Server: " . $e->getMessage());
     }
     
-	$sql = "SELECT id, title, `description` FROM appstoredb.projects";
-	$result = $conn->query($sql);
-	$projects = $result->fetchAll();
+  // избираме id, заглавие и описание на проекта от базата
+  $sql = "SELECT id, title, `description` FROM appstoredb.projects";
+  $result = $conn->query($sql);
+  $projects = $result->fetchAll();
 	
-	
-	if (count($projects) > 0) {
-  // output data of each row
+  // Визуализиране на проектите 
+  if (count($projects) > 0) {
+
   foreach($projects as $row) {
-    //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
-	echo "<div class='project' id='".$row["id"]."'>
-	  <h3>".$row["title"]."</h3>
-	  <p class='description'>".$row["description"]."</p>
-	</div>";
+  //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
+  echo "<div class='project' id='".$row["id"]."'>
+	<h3>".$row["title"]."</h3>
+	<p class='description'>".$row["description"]."</p>
+  </div>";
   }
-} else {
+  } else {
   echo "0 results";
-}
-$conn = null;
+  }
+  $conn = null;
 
 ?>
 
   </div>
   
-<!-- Бутон за качване на презентация пращащ информация към php файл -->
-<!-- Post заявка със задаване на име и друга информация за проекта -->
-<form action="/Upload.php">
-  <label for="newProject">Upload new project =></label>
-  <input type="file" id="newProject" name="projectname" /> <!--multiple--> 
+<!-- Post заявка със задаване на проекта и информация за нея -->
+<form action="http://localhost/AppStoreProject/upload.php" method="post">        
+  <label for="projectTitle">Project Title</label>
+  <input type="text" id="projectTitle" name="projectTitle" />
+  
+  <label for="projectFile">Upload new project</label>
+  <input type="file" id="projectFile" name="projectFile" />
+  
+  <label for="projectDescription"> Project Description</label>
+  <textarea id="projectDescription" name="projectDescription"> </textarea>
+  
+  <!--Скрито поле за дата взета от php -->
+  <input type="text" id="projectDate" name="projectDate" value="<?php echo date('Y-m-d H:i:s'); ?>" />
+  <!-- Остана дата на качване и location-->
   <input type="submit"/>
 </form>
 </body>

@@ -16,21 +16,23 @@
             $pass
             
         );
+		
+		 
+		$sql = "SELECT * FROM appstoredb.projects WHERE id=:id";
+		$sth = $conn->prepare($sql);
+		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
+		$project = $sth->fetch(); //object
+
+		//var_dump($project);
+		
+		$sql = "SELECT * FROM appstoredb.comments WHERE id=:id";
+		$sth = $conn->prepare($sql);
+		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
+		$comments = $sth->fetchAll(); //array of objects
     }
     catch(PDOException $e) {
-        die("Error connecting to SQL Server: " . $e->getMessage());
+        echo "Error: " . $e->getMessage();
     }
-    
-	$sql = "SELECT * FROM appstoredb.projects WHERE id=:id";
-	$sth = $conn->prepare($sql);
-	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
-	$project = $sth->fetch(); //object
-
-	//var_dump($project);
-	
-	$sql = "SELECT * FROM appstoredb.comments WHERE id=:id";
-	$sth = $conn->prepare($sql);
-	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
-	$comments = $sth->fetchAll(); //array of objects
+   
 	$conn = null;
 ?>
