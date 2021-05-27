@@ -1,4 +1,4 @@
-<!-- Всеки проект може да се отваря в нова страница с описание, бутон за сваляне и коментари -->
+<!-- Всеки проект може/трябва да се отваря в нова страница с описание, бутон за сваляне и коментари -->
 
 <!DOCTYPE html>
 <head>
@@ -52,25 +52,25 @@
 	
   // Визуализиране на проектите 
   if (count($projects) > 0) {
-
-  foreach($projects as $row) {
-  //echo "id: " . $row["id"]. " - Name: " . $row["firstname"]. " " . $row["lastname"]. "<br>";
-  echo "<div class='project' id='".$row["id"]."'>
-	<h3>".$row["title"]."</h3>
-	<p class='description'>".$row["description"]."</p>
-  </div>";
-  }
+	foreach($projects as $row) {
+		echo "<div class='project' id='".$row["id"]."'>
+			<h3>".$row["title"]."</h3>
+			<p class='description'>".$row["description"]."</p>
+			</div>";
+	}
   } else {
-  echo "0 results";
+  echo "<h1 class='error'>0 results</h1>";
   }
   $conn = null;
 
 ?>
 
   </div>
-  
+  <!--Some rules to follow for the HTML form above:
+	Make sure that the form uses method="post"
+	The form also needs the following attribute: enctype="multipart/form-data". It specifies which content-type to use when submitting the form -->
 <!-- Post заявка със задаване на проекта и информация за нея -->
-<form action="http://localhost/AppStoreProject/upload.php" method="post">        
+<form action="http://localhost/AppStoreProject/upload.php" method="post" enctype="multipart/form-data">        
   <label for="projectTitle">Project Title</label>
   <input type="text" id="projectTitle" name="projectTitle" />
   
@@ -89,7 +89,6 @@
 
 <!-- Login forma -->
 <!-- Syhranenie na paroli -> PHP password API-->
-<!-- Upload php -->
 <!-- Proverka pri ka4vane na nova versiq na proekta, dali toi e sobstvenik na proekta -->
 <!-- Pri ostavqne na komentar da e sobtsvenik ili teacher -->
 <!-- Button za comment-->
@@ -98,9 +97,9 @@
 <!-- Link s koito da ti tegli file-->
 
 <!-- 
+DELETE FROM `appstoredb`.`projects` WHERE (`Id` = '8'); за modify.php
 form login
 form sign up
-form new project
 form update project
 form add comment
 

@@ -117,3 +117,9 @@ input[type="submit"]:hover, button:hover {
   font-size: 20px;
   color: white;
 }
+
+/*това е за error съобщения от upload.php*/
+.error {
+	color:red;
+	font-size: 20px;
+}
