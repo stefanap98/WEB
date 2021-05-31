@@ -25,3 +25,7 @@ $(document).ready(function(){
 function Home() {
   window.location.href = "http://localhost/AppStoreProject/index.php";
 }
+
+function UploadForm() {
+  window.location.href = "http://localhost/AppStoreProject/uploadForm.php";
+}

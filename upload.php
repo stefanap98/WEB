@@ -1,5 +1,5 @@
 <head>
-  <title>Project upload window</title>
+  <title>Project success or error</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8"/>
   

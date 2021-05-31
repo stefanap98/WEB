@@ -7,15 +7,16 @@
   }
 }*/
 
-h1 {
-  padding: 10px;
-  margin: 10px;
-}
-
 body {
   background-color: rgb(24, 26, 27);
   color: rgb(255, 255, 255);
   padding: 10px;
+  font-family: "Lucida Console", "Courier New", monospace;
+}
+
+h1, h3, p {
+  padding: 10px;
+  margin: 10px;
 }
 
 #projects {
@@ -108,7 +109,10 @@ textarea {
 }
 
 input[type="submit"], button {
+  background-color: rgb(24, 26, 27);
   transition: 1s;
+  color: white;
+  font-family: "Lucida Console", "Courier New", monospace;
 }
 
 input[type="submit"]:hover, button:hover {

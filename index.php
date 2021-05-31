@@ -55,7 +55,6 @@
 	foreach($projects as $row) {
 		echo "<div class='project' id='".$row["id"]."'>
 			<h3>".$row["title"]."</h3>
-			<p class='description'>".$row["description"]."</p>
 			</div>";
 	}
   } else {
@@ -66,25 +65,7 @@
 ?>
 
   </div>
-  <!--Some rules to follow for the HTML form above:
-	Make sure that the form uses method="post"
-	The form also needs the following attribute: enctype="multipart/form-data". It specifies which content-type to use when submitting the form -->
-<!-- Post заявка със задаване на проекта и информация за нея -->
-<form action="http://localhost/AppStoreProject/upload.php" method="post" enctype="multipart/form-data">        
-  <label for="projectTitle">Project Title</label>
-  <input type="text" id="projectTitle" name="projectTitle" />
-  
-  <label for="projectFile">Upload new project</label>
-  <input type="file" id="projectFile" name="projectFile" />
-  
-  <label for="projectDescription"> Project Description</label>
-  <textarea id="projectDescription" name="projectDescription"> </textarea>
-  
-  <!--Скрито поле за дата взета от php -->
-  <input type="text" id="projectDate" name="projectDate" value="<?php echo date('Y-m-d H:i:s'); ?>" />
-  <!-- Остана дата на качване и location-->
-  <input type="submit"/>
-</form>
+  <button type="button" onclick="UploadForm()"> Upload new project </button>
 </body>
 
 <!-- Login forma -->
@@ -94,7 +75,6 @@
 <!-- Button za comment-->
 <!-- Button za nova versiq-->
 <!-- V bazata danni se zapazva samo heshirnata parola sled tova pri log in se sravnqva hashirana parola s tazi v bazata-->
-<!-- Link s koito da ti tegli file-->
 
 <!-- 
 DELETE FROM `appstoredb`.`projects` WHERE (`Id` = '8'); за modify.php
