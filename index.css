@@ -122,6 +122,33 @@ input[type="submit"]:hover, button:hover {
   color: white;
 }
 
+.uname {
+  font-size:60%;
+  display:inline-block;
+}
+.logout{
+  background-color: white; /* Green */
+  color: black;
+  display:inline-block;
+  padding:2px 2px;
+  font-size:50%;
+  height:50%;
+}
+.login{
+  margin: 10px;
+  padding: 7px;
+  background-color: rgb(36, 39, 41);
+  color: rgb(6, 26, 0);
+  font-size: 16px;
+  border: 7px solid rgba(0, 64, 255, 0.7);
+  color: rgb(255, 255, 255);
+  border-radius: 4px;
+  align-content:center;
+  border-style: outset;
+}
+.comment_header{
+  display:inline-block;
+}
 /*това е за error съобщения от upload.php*/
 .error {
 	color:red;
