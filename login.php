@@ -1,23 +1,5 @@
-<?php
-session_start();
-$message = "";
-if (count($_POST) > 0) {
-  $con = mysqli_connect('localhost', 'root', '', 'appstoredb') or die('Unable To connect');
-  $result = mysqli_query($con, "SELECT * FROM appstoredb.Users WHERE Username='" . $_POST["username"] . "' and Password = '" . $_POST["password"] . "'");
-  $row  = mysqli_fetch_array($result);
-  if (is_array($row)) {
-    $_SESSION["id"] = $row['Id'];
-    $_SESSION["name"] = $row['Username'];
-    $_SESSION["admin"] = $row['IsTeacher'];
-  } else {
-    echo "<p>Invalid Username or Password!</p>";
-  }
-}
-if (isset($_SESSION["id"])) {
-  header("Location:index.php");
-}
-?>
-
+<!DOCTYPE html>
+<html>
 <head>
   <title>Projects App Store</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -40,9 +22,29 @@ if (isset($_SESSION["id"])) {
 </head>
 
 <body>
-  <form class="login" action="" method="post">
-    <label>UserName :</label><input type="text" name="username" class="box" /><br /><br />
-    <label>Password :</label><input type="password" name="password" class="box" /><br /><br />
-    <input type="submit" value=" Submit " /><br />
+<?php
+session_start();
+$message = "";
+if (count($_POST) > 0) {
+  $con = mysqli_connect('localhost', 'root', '', 'appstoredb') or die('Unable To connect');
+  $result = mysqli_query($con, "SELECT * FROM appstoredb.Users WHERE Username='" . $_POST["username"] . "' and Password = '" . $_POST["password"] . "'");
+  $row  = mysqli_fetch_array($result);
+  if (is_array($row)) {
+    $_SESSION["id"] = $row['Id'];
+    $_SESSION["name"] = $row['Username'];
+    $_SESSION["admin"] = $row['IsTeacher'];
+  } else {
+    echo "<p>Invalid Username or Password!</p>";
+  }
+}
+if (isset($_SESSION["id"])) {
+  header("Location:index.php");
+}
+?>
+  <form method="post"> <!--action=""> Form Submission subsection of the current HTML5 draft does not allow action="" (empty attribute). It is against the specification.-->
+    <label>UserName :</label><input type="text" name="username" />
+    <label>Password :</label><input type="password" name="password" />
+    <input type="submit" value=" Submit " />
   </form>
 </body>
+</html>

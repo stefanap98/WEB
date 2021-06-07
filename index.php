@@ -1,7 +1,7 @@
 <!-- Всеки проект може/трябва да се отваря в нова страница с описание, бутон за сваляне и коментари -->
 
 <!DOCTYPE html>
-
+<html>
 <head>
   <title>Projects App Store</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -29,11 +29,16 @@
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
   }
-  echo "<div class=\"uname\"> Logged in as: " . $_SESSION["name"] . "</div>"  ?>
-  <input type="button" class="logout" value="Log Out" onClick="document.location.href='logout.php'" />
-  <?php if ($_SESSION["admin"] == 1)
-    echo "<input type=\"button\" class=\"admin\" value=\"Admin\" onClick=\"document.location.href='admin_page.php'\" />" ?>
+  echo "<p class='uname'> Logged in as: " . $_SESSION["name"] . "</p>"  
+  ?>
 
+  <input type="button" class="logout" value="Log Out" onClick="document.location.href='logout.php'" />
+  
+  <?php 
+  if ($_SESSION["admin"] == 1) {
+    echo "<input type='button' class='admin' value='Admin' onClick=\"document.location.href='admin_page.php'\" />" ;
+	}
+  ?>
 
   <h1> List of available projects</h1>
 
@@ -79,19 +84,4 @@
   </div>
   <button type="button" onclick="UploadForm()"> Upload new project </button>
 </body>
-
-<!-- Syhranenie na paroli -> PHP password API-->
-<!-- Proverka pri ka4vane na nova versiq na proekta, dali toi e sobstvenik na proekta -->
-<!-- Pri ostavqne na komentar da e sobtsvenik ili teacher -->
-<!-- Button za comment-->
-<!-- Button za nova versiq-->
-<!-- V bazata danni se zapazva samo heshirnata parola sled tova pri log in se sravnqva hashirana parola s tazi v bazata-->
-
-<!-- 
-DELETE FROM `appstoredb`.`projects` WHERE (`Id` = '8'); за modify.php
-form sign up
-form update project
-form add comment
-
-proverka za dannite na forma s javascript sled tova phpto da proveri dali sa verni
--->
+</html>

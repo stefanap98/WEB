@@ -1,3 +1,4 @@
+CREATE DATABASE [IF NOT EXISTS] appstoredb;
 Use appstoredb;
 
 CREATE TABLE  Projects  (

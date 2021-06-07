@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
   <title>Project success or error</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -171,3 +173,4 @@
 
 <button type="button" onclick="Home()"> Head back to Home screen </button>
 </body>
+</html>

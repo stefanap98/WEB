@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<html>
 <head>
   <title>Project upload</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +25,7 @@
 		Make sure that the form uses method="post"
 		The form also needs the following attribute: enctype="multipart/form-data". It specifies which content-type to use when submitting the form -->
 	<!-- Post заявка със задаване на проекта и информация за нея -->
-	<form action="http://localhost/AppStoreProject/upload.php" method="post" enctype="multipart/form-data">        
+	<form action="upload.php" method="post" enctype="multipart/form-data">        
 	  <label for="projectTitle">Project Title</label>
 	  <input type="text" id="projectTitle" name="projectTitle" required />
 	  
@@ -39,3 +41,4 @@
 	  <input type="submit"/>
 	</form>
 </body>
+</html>

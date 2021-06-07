@@ -11,7 +11,7 @@ $(document).ready(function(){
 	//добавяне на onclick event на project div-ове
 	$(".project").click(function() {
 		var id = $(this)[0].id;
-		window.location = "http://localhost/AppStoreProject/project.php?id=" + id;
+		window.location = "project.php?id=" + id;
 	});
 	/*интересно защо не работи
 	$(".homeButton").click(function() {
@@ -23,9 +23,9 @@ $(document).ready(function(){
 
 //добавяне на onclick event за бутона в upload.php за връщане към index.php
 function Home() {
-  window.location.href = "http://localhost/AppStoreProject/index.php";
+  window.location.href = "index.php";
 }
 
 function UploadForm() {
-  window.location.href = "http://localhost/AppStoreProject/uploadForm.php";
+  window.location.href = "uploadForm.php";
 }
