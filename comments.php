@@ -9,11 +9,26 @@ if (isset($_SESSION["admin"]) == true) {
   $prj_id = $_POST["project_id"];
   $us_id = $_SESSION["id"];
   $date = date('Y-m-d H:i:s');
-  $conn = new mysqli("localhost", "root", "", "appstoredb");
-  $sql = $conn->prepare("INSERT INTO `comments` (`ProjectId`,`UserId,Text`,`Timestamp`)  VALUES ('$prj_id', '$us_id', '$comment,'$date')");
 
-  header("Location:project.php?id=$prj_id");
+  $serverName = "localhost";
+  $database = "appstoredb";
+  $user = "root";
+  $pass = "";
+  try {
+    $conn = new PDO(
+		"mysql:host=$serverName;dbname=$database;",
+		$user,
+		$pass
+	  );
+	
+	$sql = "INSERT INTO `comments` (`ProjectId`,`UserId`,`Text`,`Timestamp`) VALUES ('$prj_id','$us_id','$comment','$date')";
+	$sth = $conn->prepare($sql);
+	$sth->execute();
+
+	} catch (PDOException $e) {
+	  echo "Error: " . $e->getMessage();
+  }
+  $conn = null;
 }
-
-//$conn = null;
+header("Location:project.php?id=$prj_id");
 ?>

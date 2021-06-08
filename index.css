@@ -124,10 +124,27 @@ input[type="submit"]:hover, button:hover, input[type="button"]:hover{
   font-size: 11px;
 }
 
-/* Това трябва да се види след като оправим коментарите да се качват в базата*/
+.comment {
+	border: 2px solid #4d79ff;
+	margin: 10px;
+}
+
+/*Това е за заглавието на comments */
 .comment_header{
-  color: red;
   display:inline-block;
+  margin: 5px 10px;
+  padding: 7px;
+}
+
+.comment_header:first-child {
+	border-bottom: 2px solid #809fff;
+	color: #4d79ff;
+}
+
+.comment_body {
+  margin: 5px 10px;
+  padding: 3px 7px;
+  font-style: italic;
 }
 
 /*това е за error съобщения от upload.php*/

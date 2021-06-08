@@ -45,31 +45,26 @@
 		$pass
 	  );
 
-
-	$sql = "SELECT * FROM appstoredb.projects WHERE id=:id";
+	$sql = "SELECT * FROM appstoredb.projects WHERE id = :id";
 	$sth = $conn->prepare($sql);
 	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
 	$project = $sth->fetch(); //object
 	
-	/* нещо не съм сигурен за това дали работи/как работи
-	$sql = "SELECT * FROM appstoredb.comments WHERE id=:id";
-	$sth = $conn->prepare($sql);
-	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
-	$comments = $sth->fetchAll(); //array of objects
-	*/
+	//тука извличаме всички коментари от базата
 	$prj_id = $_GET["id"];
-	$comments_quer = "SELECT * FROM appstoredb.Projects WHERE ProjectId = $prj_id ";
+	$comments_quer = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $prj_id ";
 	$sth = $conn->prepare($comments_quer);
-	$sth->execute(); //Така е написано за да се избегне SQL injection
-	$all_comments = $sth->fetchAll(); //object
-
+	$sth->execute(); 
+	$all_comments = $sth->fetchAll(); //обект с всички коментари по дадения проект
 
 	//Тук пишем динамичната html страница
 	echo "<div>
 		  <h1>" . $project['Title'] . "</h1> 
-		  <h3> Project created: <time>" . $project['DateCreated'] . "</time> </h3> 
-		  <h3> Project modified: <time>" . $project['DateModified'] . "</time> </h3> 
-		  <h3> Project Description</h3> <p>" . $project['Description'] . "</p> 
+		  <h3 class='comment_header'> Project created: <time>" . $project['DateCreated'] . "</time> </h3> 
+		  <h3 class='comment_header'> Project modified: <time>" . $project['DateModified'] . "</time> </h3> 
+		  <div class='comment'>
+		  <h3 class='comment_header'> Project Description</h3> <p class='comment_body'>" . $project['Description'] . "</p> 
+		  </div>
 		  <a href='ProjectsFileLocation/" . $project['FileLocation'] . "' download>
 			<button> Download project </button>
 		  </a> 
@@ -79,18 +74,28 @@
 			<input type='submit'>
 		  </form>
 		  </div>";
-		
+	
+	$comments_query = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
+	$sth = $conn->prepare($comments_query);
+	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
+	$user_info = $sth->fetchAll();
+	
+	echo "<h3> Comment Section </h3>";
 	foreach ($all_comments as $comm) {
-	  $user_id = $comm["UserId"];
-	  $comments_quer = "SELECT * FROM appstoredb.Users WHERE Id = $user_id";
-	  $sth = $conn->prepare($comments_quer);
-	  $user_info = $sth->execute(); //Така е написано за да се избегне SQL injection
-	  $user = $user_info["Username"];
-	  echo "<div>
-			  <h3 class='comment_header'>" . $user . "</h3>
+	  $user_id = $comm["UserId"]; //променлива за това кой е писал коментара
+	  
+	   // цялата информация за коментарите от таблицата
+		$user_query="SELECT Username FROM appstoredb.users WHERE ID = $user_id";
+		$sth = $conn->prepare($user_query);
+		$sth->execute();
+		$user = $sth->fetch();
+		
+	  echo "<div class='comment'>
+			  <h3 class='comment_header'>" . $user["Username"] . "</h3>
 			  <h3 class='comment_header'>" . $comm["Timestamp"] . "</h3>
-			  <h3 class='comment_body'>" . $comm["Text"]  . "</h3>
+			  <p class='comment_body'>" . $comm["Text"]  . "</p>
 			  </div>";
+			  
 	}
   } catch (PDOException $e) {
 	  echo "Error: " . $e->getMessage();
