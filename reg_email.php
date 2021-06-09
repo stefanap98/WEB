@@ -24,46 +24,42 @@
 <body>
 <?php
 session_start();
-$message = "";
 if (count($_POST) > 0) {
-    $serverName = "localhost";
-    $database = "appstoredb";
-    $user = "root";
-    $pass = "";
-    try {
-      $conn = new PDO(
-        "mysql:host=$serverName;dbname=$database;",
-        $user,
-        $pass
-      );
-    } catch (PDOException $e) {
-      die("Error connecting to SQL Server: " . $e->getMessage());
-    }
-    $sql = "SELECT * FROM appstoredb.Users WHERE Username='" . $_POST["username"] . "' and Password = '" . $_POST["password"] . "'";
-    $result = $conn->query($sql);
-    $id = $result->fetch();
-  if (is_array($id)) {
-    $_SESSION["id"] =     $id['Id'];
-    $_SESSION["name"] =   $id['Username'];
-    $_SESSION["admin"] =  $id['IsTeacher'];
-    $_SESSION["group"] =  $id['GroupId'];
-    $_SESSION["mail"] =  $id['Email'];
-  } else {
-    echo "<p>Invalid Username or Password!</p>";
+      $user_mail = $_POST['email_input'];
+      var_dump($user_mail);
+      if (filter_var($user_mail, FILTER_VALIDATE_EMAIL)) {
+        echo "is valid";
+        $serverName = "localhost";
+        $database = "appstoredb";
+        $user = "root";
+        $pass = "";
+        try {
+          $conn = new PDO( "mysql:host=$serverName;dbname=$database;", $user, $pass);
+        } catch (PDOException $e) {
+          die("Error connecting to SQL Server: " . $e->getMessage());
+        }
+        $idd = $_SESSION["name"];
+        $sql = "UPDATE appstoredb.Users SET Email = '$user_mail' WHERE Username = '$idd'";
+        if($conn->query($sql)){
+          echo "This Email is accepted";
+        } 
+      
+        $conn = null;
+        if (isset($_SESSION["id"])) { header("Location:index.php"); }
+      }
+  else{
+    echo "kur";
   }
-  $conn = null;
-//  if ($_SESSION["mail"] == '') {
-//    header("Location:reg_email.php");
-//  }
 }
 if (isset($_SESSION["id"])) {
   header("Location:index.php");
 }
 ?>
-  <form method="post"> <!--action=""> Form Submission subsection of the current HTML5 draft does not allow action="" (empty attribute). It is against the specification.-->
-    <label>UserName :</label><input type="text" name="username" required/>
-    <label>Password :</label><input type="password" name="password" required/>
+  <div>You have to enter your email to continue to use the site. It will be used to spam you just fyi.</div>
+  <form method="POST">
+    <label>Email :</label><input type="text" id="email_input" name="email_input" required/> 
     <input type="submit" value=" Submit " />
   </form>
 </body>
 </html>
+

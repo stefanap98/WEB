@@ -60,15 +60,30 @@
 	//Тук пишем динамичната html страница
 	echo "<div>
 		  <h1>" . $project['Title'] . "</h1> 
-		  <h3 class='comment_header'> Project created: <time>" . $project['DateCreated'] . "</time> </h3> 
+		  <h3 class='comment_header'> Project created: <time>" . $project ['DateCreated'] . "</time> </h3> 
 		  <h3 class='comment_header'> Project modified: <time>" . $project['DateModified'] . "</time> </h3> 
 		  <div class='comment'>
 		  <h3 class='comment_header'> Project Description</h3> <p class='comment_body'>" . $project['Description'] . "</p> 
 		  </div>
 		  <a href='ProjectsFileLocation/" . $project['FileLocation'] . "' download>
 			<button> Download project </button>
-		  </a> 
-		  <form action='comments.php' method='post'>
+		  </a>";
+	if ($project['GroupId'] == $_SESSION['group']){
+echo "
+	<form action='upload.php' method='post' enctype='multipart/form-data'>
+	  <input type='hidden' id='projectTitle' name='projectTitle' value='".$project['DateCreated' ]."'/>
+	  <input type='hidden' id='projectFile' name='projectFile'   value='".$project['DateModified']."'/>
+	 
+	  <input  id='projectDescription' name='projectDescription' > </textarea>
+	 
+	  <!--Скрито поле за дата взета от php -->
+	  <input type='text' id='projectDate' name='projectDate' value='<?php echo date('Y-m-d H:i:s'); ?>' />
+	  <!-- Остана дата на качване и location-->
+	  <input type='submit'/>
+	</form> ";
+}
+
+	echo  "<form action='comments.php' method='post'>
 			<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here'></textarea> 
 			<input type='hidden' id='project_id' name ='project_id' value='" . $_GET["id"] . "'>
 			<input type='submit'>

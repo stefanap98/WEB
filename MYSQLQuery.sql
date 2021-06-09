@@ -3,6 +3,7 @@ Use appstoredb;
 
 CREATE TABLE  Projects  (
   Id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  GroupId int NOT NULL,
   Title nvarchar(255) NOT NULL,
   `Description` nvarchar(4000) NOT NULL,
   DateCreated datetime NOT NULL,
@@ -13,6 +14,7 @@ CREATE TABLE  Projects  (
 CREATE TABLE Users (
   Id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   Username nvarchar(255) NOT NULL,
+  GroupId int NOT NULL,
   Email varchar(255) NOT NULL,
   `Password` nvarchar(4000) NOT NULL,
   IsTeacher bit NOT NULL

@@ -28,18 +28,20 @@ class profile
   public $name = "";
   public $pass = "";
   public $admin = 0;
-  public function cons($n, $p)
+  public $groupid = 0;
+  public function cons($n, $p,$t)
   {
     $this->name = $n;
     $this->pass = $p;
+    $this->team = $t;
   }
   public function send_to_db($conn, $safeguard)
   {
     if (array_key_exists($this->name,  $safeguard) == true)
       echo "<p>Username $this->name exist already</p>";
     else {
-      $sql = "INSERT INTO appstoredb.Users (Username, Email, Password ,IsTeacher) VALUES ('$this->name', '', '$this->pass',$this->admin)";
-      if ($conn->query($sql) === TRUE) {
+      $sql = "INSERT INTO appstoredb.Users (Username, GroupId,Email, Password ,IsTeacher) VALUES ('$this->name','$this->team', '', '$this->pass',$this->admin)";
+      if ($conn->query($sql)) {
         echo "<p>" . $sql . "</p>";
       } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
@@ -57,9 +59,10 @@ function gen_names_team($team, $nrs)
 {
   $res = [];
   foreach ($nrs as $i) {
-    $tmp = "team_" . $team . "_" . $i;
+    $id = trim($i);
+    $tmp = "team_" . $team . "_" . $id;
     $tmp_user = new profile();
-    $tmp_user->cons($tmp,  gen_pass($tmp));
+    $tmp_user->cons($tmp,  gen_pass($tmp),$team);
     array_push($res,  $tmp_user);
   }
   return $res;
@@ -79,16 +82,20 @@ function read_files($fname)
       array_push($cred,  $i);
     }
   }
+  fclose($file);
   return $cred;
 }
 function get_all_names($conn)
 {
   $arr = array();
-  $result = mysqli_query($conn, "SELECT Username FROM appstoredb.Users ");
-  while ($nm = $result->fetch_row()) {
-    $arr[$nm[0]] = true;
+
+  $sql = "SELECT Username FROM appstoredb.Users ";
+  $tmp = $conn->query($sql);
+  $result = $tmp->fetchAll();
+  foreach ($result as $nm) {
+    $arr[$nm['Username']] = true;
   }
-  //var_dump($arr);
+  
   return $arr;
 }
 
@@ -98,13 +105,26 @@ function gen_admin_name($name)
   $adm = new profile();
   $adm->admin = 1;
   $adm->name = $tmp;
+  $adm->team = 0;
   $adm->pass = gen_pass($tmp);
   return $adm;
 }
 
 function gen_ccred($fname)
 {
-  $conn = new mysqli("localhost", "root", "", "appstoredb");
+    $serverName = "localhost";
+    $database = "appstoredb";
+    $user = "root";
+    $pass = "";
+    try {
+      $conn = new PDO(
+        "mysql:host=$serverName;dbname=$database;",
+        $user,
+        $pass
+      );
+    } catch (PDOException $e) {
+      die("Error connecting to SQL Server: " . $e->getMessage());
+    }
 
   if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -116,12 +136,10 @@ function gen_ccred($fname)
   array_push($res, gen_admin_name("Stefan"));
   array_push($res, gen_admin_name("Milen"));
   $safeguard = get_all_names($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
-
-
   foreach ($res as $i) {
     $i->send_to_db($conn,  $safeguard);
   }
-  $conn->close();
+  $conn = null;
 }
 
 gen_ccred("proojects.csv");
