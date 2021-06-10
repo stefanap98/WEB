@@ -38,21 +38,19 @@ if (count($_POST) > 0) {
         } catch (PDOException $e) {
           die("Error connecting to SQL Server: " . $e->getMessage());
         }
-        $idd = $_SESSION["name"];
-        $sql = "UPDATE appstoredb.Users SET Email = '$user_mail' WHERE Username = '$idd'";
-        if($conn->query($sql)){
-          echo "This Email is accepted";
-        } 
-      
+        $idd = $_SESSION["id"];
+        echo $idd;
+        $sql = "UPDATE appstoredb.Users SET Email='$user_mail' WHERE Id='$idd'";
+        $conn->prepare($sql)->execute();
+        $_SESSION["mail"] = $user_mail ;
         $conn = null;
-        if (isset($_SESSION["id"])) { header("Location:index.php"); }
+        if (isset($_SESSION["id"])) { 
+          header("Location:index.php"); 
+        }
       }
-  else{
-    echo "kur";
-  }
-}
-if (isset($_SESSION["id"])) {
-  header("Location:index.php");
+      else{
+        echo "kur";
+      }
 }
 ?>
   <div>You have to enter your email to continue to use the site. It will be used to spam you just fyi.</div>

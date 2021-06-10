@@ -26,6 +26,9 @@
 <body>
   <?php
   session_start();
+  if (strlen($_SESSION["mail"]) == 0) {
+    header("Location:reg_email.php");
+  }
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
   }

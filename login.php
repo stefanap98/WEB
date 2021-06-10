@@ -42,19 +42,19 @@ if (count($_POST) > 0) {
     $sql = "SELECT * FROM appstoredb.Users WHERE Username='" . $_POST["username"] . "' and Password = '" . $_POST["password"] . "'";
     $result = $conn->query($sql);
     $id = $result->fetch();
-  if (is_array($id)) {
-    $_SESSION["id"] =     $id['Id'];
-    $_SESSION["name"] =   $id['Username'];
-    $_SESSION["admin"] =  $id['IsTeacher'];
-    $_SESSION["group"] =  $id['GroupId'];
-    $_SESSION["mail"] =  $id['Email'];
-  } else {
-    echo "<p>Invalid Username or Password!</p>";
-  }
-  $conn = null;
-//  if ($_SESSION["mail"] == '') {
-//    header("Location:reg_email.php");
-//  }
+    if (is_array($id)) {
+      $_SESSION["id"] =     $id['Id'];
+      $_SESSION["name"] =   $id['Username'];
+      $_SESSION["admin"] =  $id['IsTeacher'];
+      $_SESSION["group"] =  $id['GroupId'];
+      $_SESSION["mail"] =  $id['Email'];
+    } else {
+      echo "<p>Invalid Username or Password!</p>";
+    }
+    $conn = null;
+    if (strlen($_SESSION["mail"]) == 0) {
+      header("Location:reg_email.php");
+    }
 }
 if (isset($_SESSION["id"])) {
   header("Location:index.php");
