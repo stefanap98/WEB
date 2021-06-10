@@ -49,7 +49,7 @@ if (count($_POST) > 0) {
         }
       }
       else{
-        echo "kur";
+        echo "<h3>Invlaid email format</h3>";
       }
 }
 ?>
