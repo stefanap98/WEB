@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Project upload</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8"/>
   
   <!-- Може би малко излишни мета данни, но са добавени за да се покаже повече знания -->
@@ -37,7 +37,6 @@
 	  
 	  <!--Скрито поле за дата взета от php -->
 	  <input type="text" id="projectDate" name="projectDate" value="<?php echo date('Y-m-d H:i:s'); ?>" />
-	  <!-- Остана дата на качване и location-->
 	  <input type="submit"/>
 	</form>
 </body>

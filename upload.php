@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Project success or error</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8"/>
   
   <!-- Може би малко излишни мета данни, но са добавени за да се покаже повече знания -->
@@ -57,23 +57,28 @@
 		$target_dir = "ProjectsFileLocation/" ;
 		$target_file = $target_dir . $projName;
 		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+		$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+		
+		//Проверка дали има създадена папка за проекти, ако не я създаваме
+		if (!file_exists($target_dir)) {
+			mkdir($target_dir, 0777, true);
+		}
 		
 		// Проверка дали съществува файла
 		if (file_exists($target_file)) {
-		echo "<h1 class='error'>Sorry, file already exists.</h1>";
-		$uploadOk = 0;
+			echo "<h1 class='error'>Sorry, file already exists.</h1>";
+			$uploadOk = 0;
 		}
 		
 		// Проверка дали файла надвишава лимит
 		if ($_FILES["projectFile"]["size"] > 35000000) {
-		echo "<h1 class='error'>Sorry, your file is too large.</h1>";
-		$uploadOk = 0;
+			echo "<h1 class='error'>Sorry, your file is too large.</h1>";
+			$uploadOk = 0;
 		}
 		
 		// Проверка за extensiona
-		if($imageFileType != "zip" && $imageFileType != "rar" && $imageFileType != "gz"
-		&& $imageFileType != "tar" && $imageFileType != "7z") {
+		if($fileType != "zip" && $fileType != "rar" && $fileType != "gz"
+		&& $fileType != "tar" && $fileType != "7z") {
 			echo "<h1 class='error'>Sorry, only ZIP, RAR, GZIP, TAR or 7ZIP files are allowed.</h1>";
 			$uploadOk = 0;
 		}

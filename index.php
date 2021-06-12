@@ -4,7 +4,7 @@
 <html>
 <head>
   <title>Projects App Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
 
   <!-- Може би малко излишни мета данни, но са добавени за да се покаже повече знания -->
@@ -26,12 +26,14 @@
 <body>
   <?php
   session_start();
-  if (strlen($_SESSION["mail"]) == 0) {
+    if (strlen($_SESSION["mail"]) == 0) {
     header("Location:reg_email.php");
   }
+  
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
   }
+
   echo "<p class='uname'> Logged in as: " . $_SESSION["name"] . "</p>"  
   ?>
 

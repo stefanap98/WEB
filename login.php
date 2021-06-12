@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Projects App Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8" />
 
   <!-- Може би малко излишни мета данни, но са добавени за да се покаже повече знания -->
@@ -47,7 +47,7 @@ if (count($_POST) > 0) {
       $_SESSION["name"] =   $id['Username'];
       $_SESSION["admin"] =  $id['IsTeacher'];
       $_SESSION["group"] =  $id['GroupId'];
-      $_SESSION["mail"] =  $id['Email'];
+      $_SESSION["mail"] =   $id['Email'];
     } else {
       echo "<p>Invalid Username or Password!</p>";
     }
