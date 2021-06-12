@@ -26,7 +26,7 @@
 <body>
   <?php
   session_start();
-    if (strlen($_SESSION["mail"]) == 0) {
+  if (strlen($_SESSION["mail"]) == 0) {
     header("Location:reg_email.php");
   }
   
