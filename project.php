@@ -113,20 +113,21 @@ if (isset($_SESSION["id"]) == false) {
 	  				<input type='submit' class='update_form_hidden' value='Update' id='submit_update'/>
 				</form> ";
 			}
-
-	echo  "<form action='comments.php' method='post'>
-		<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here'></textarea>
-		<input type='hidden' id='project_id' name ='project_id' value='" . $_GET["id"] . "'>
-		<input type='submit'>
-		</form>
-		</div>";
-
-	$comments_query = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
-	$sth = $conn->prepare($comments_query);
-	$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
-	$user_info = $sth->fetchAll();
-
 	echo "<h3> Comment Section </h3>";
+	$usr = $_SESSION["admin"];
+	if($usr) {
+		echo  "<form action='comments.php' method='post'>
+				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here'></textarea> 
+				<input type='hidden' id='project_id' name ='project_id' value='" . $_GET["id"] . "'>
+				<input type='submit'>
+			  </form>
+			  </div>";
+		
+		$comments_query = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
+		$sth = $conn->prepare($comments_query);
+		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
+		$user_info = $sth->fetchAll();
+	}
 	foreach ($all_comments as $comm) {
 		$user_id = $comm["UserId"]; //променлива за това кой е писал коментара
 
