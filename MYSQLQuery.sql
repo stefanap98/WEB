@@ -20,14 +20,6 @@ CREATE TABLE Users (
   IsTeacher bit NOT NULL
 );
 
-CREATE TABLE ProjectUsers (
-  Id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  ProjectId int NOT NULL,
-  UserId int NOT NULL,
-  FOREIGN KEY (ProjectId) REFERENCES Projects(Id),
-  FOREIGN KEY (UserId) REFERENCES Users(Id)
-);
-
 CREATE TABLE Comments (
   Id int NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ProjectId int NOT NULL,
