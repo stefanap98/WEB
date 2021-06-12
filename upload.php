@@ -90,7 +90,8 @@
 		} else {
 			if (move_uploaded_file($_FILES["projectFile"]["tmp_name"], $target_file)) {
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
-				$sql = "INSERT INTO `projects` (`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
+				$gr_id = $_SESSION['group'];
+				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
 				$sth = $conn->prepare($sql);
 				$sth->execute();
 				echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";
