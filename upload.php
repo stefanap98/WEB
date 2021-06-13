@@ -54,7 +54,7 @@
 		$projName = htmlspecialchars( basename( $_FILES["projectFile"]["name"])); //създавам променлива в която складирам името на файла
 		
 		// Код за качване на файла в папка
-		$target_dir = "ProjectsFileLocation/" ;
+		$target_dir = "ProjectsFileLocation/".$_SESSION['group'];
 		$target_file = $target_dir . $projName;
 		$uploadOk = 1;
 		$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));

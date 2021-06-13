@@ -57,16 +57,67 @@ if (isset($_SESSION["id"]) == false) {
 		$project_descr= $_POST['newProjectDescription'];
 		
 		if (isset($_POST['newProjectFile'])){
-			// upload project here
-		}
+			$projName = htmlspecialchars( basename( $_FILES["newProjectFile"]["name"])); //създавам променлива в която складирам името на файла
+			
+			// Код за качване на файла в папка
+			$target_dir = "ProjectsFileLocation/".$_SESSION['group']."/";
+			$target_file = $target_dir . $projName;
+			$oldfile = $project['FileLocation'];
+			$uploadOk = 1;
+			$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+			
+			//Проверка дали има създадена папка за проекти, ако не я създаваме
+			if (!file_exists($target_dir)) {
+				mkdir($target_dir, 0777, true);
+			}
+			
+			// Проверка дали съществува файла
+			if (file_exists($target_file)) {
+				echo "<h1 class='error'>Sorry, file already exists.</h1>";
+				$uploadOk = 0;
+			}
+			
+			// Проверка дали файла надвишава лимит
+			if ($_FILES["projectFile"]["size"] > 35000000) {
+				echo "<h1 class='error'>Sorry, your file is too large.</h1>";
+				$uploadOk = 0;
+			}
+			
+			// Проверка за extensiona
+			if($fileType != "zip" && $fileType != "rar" && $fileType != "gz"
+			&& $fileType != "tar" && $fileType != "7z") {
+				echo "<h1 class='error'>Sorry, only ZIP, RAR, GZIP, TAR or 7ZIP files are allowed.</h1>";
+				$uploadOk = 0;
+			}
+			
+			// Проверка дали променливата $uploadOk има стойност 0 поради грешка
+			if ($uploadOk == 0) {
+				echo "<h1 class='error'>Sorry, your file was not uploaded.</h1>";
+			// Ако всичко е добре качваме файла
+			} else {
+				if (move_uploaded_file($_FILES["newProjectFile"]["tmp_name"], $target_file)) {
+					
+					echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
+					$gr_id = $_SESSION['group'];
+					$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
+					$sth = $conn->prepare($sql);
+					$sth->execute();
+					if ($target_file != $oldfile){
+						unlink($oldfile);
+					}
+					echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";
+				} else {
+					echo "<h1 class='error'>Sorry, there was an error uploading your file.</h1>";
+				}
+			}
+		} 
 		$project_name = $_POST['newProjectTitle'];
 		$project_descr= $_POST['newProjectDescription'];
         $sql = "UPDATE appstoredb.Projects SET Title='$project_name' Description='$project_descr' WHERE Id='$idd'";
 	    $result = $conn->query($sql);
 	    $id = $result->fetch();
 		$conn = null;
-	}
-
+		}
   $serverName = "localhost";
   $database = "appstoredb";
   $user = "root";
