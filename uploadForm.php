@@ -35,8 +35,6 @@
 	  <label for="projectDescription"> Project Description</label>
 	  <textarea id="projectDescription" name="projectDescription" required> </textarea>
 	  
-	  <!--Скрито поле за дата взета от php -->
-	  <input type="text" id="projectDate" name="projectDate" value="<?php echo date('Y-m-d H:i:s'); ?>" />
 	  <input type="submit"/>
 	</form>
 </body>

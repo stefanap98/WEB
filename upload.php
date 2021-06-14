@@ -1,7 +1,10 @@
+<?php   
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Project success or error</title>
+  <title>Project upload</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta charset="utf-8"/>
   
@@ -54,7 +57,7 @@
 		$projName = htmlspecialchars( basename( $_FILES["projectFile"]["name"])); //създавам променлива в която складирам името на файла
 		
 		// Код за качване на файла в папка
-		$target_dir = "ProjectsFileLocation/".$_SESSION['group'];
+		$target_dir = "ProjectsFileLocation/" . $_SESSION['group'] . "/";
 		$target_file = $target_dir . $projName;
 		$uploadOk = 1;
 		$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -91,7 +94,8 @@
 			if (move_uploaded_file($_FILES["projectFile"]["tmp_name"], $target_file)) {
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
 				$gr_id = $_SESSION['group'];
-				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
+				$projDate = date('Y-m-d H:i:s');
+				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$projDate','$projDate','$projName')";
 				$sth = $conn->prepare($sql);
 				$sth->execute();
 				echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";
@@ -100,78 +104,6 @@
 			}
 		}
 	} 
-
-	//код за проверка на файла от сайт на php / Алтернатива на това което съм писал
-	/*
-	try {
-   
-    // Undefined | Multiple Files | $_FILES Corruption Attack
-    // If this request falls under any of them, treat it invalid.
-    if (
-        !isset($_FILES['projectFile']['error']) ||
-        is_array($_FILES['projectFile']['error'])
-    ) {
-        throw new RuntimeException('Invalid parameters.');
-    }
-
-    // Check $_FILES['upfile']['error'] value.
-    switch ($_FILES['projectFile']['error']) {
-        case UPLOAD_ERR_OK:
-            break;
-        case UPLOAD_ERR_NO_FILE:
-            throw new RuntimeException('No file sent.');
-        case UPLOAD_ERR_INI_SIZE:
-        case UPLOAD_ERR_FORM_SIZE:
-            throw new RuntimeException('Exceeded filesize limit.');
-        default:
-            throw new RuntimeException('Unknown errors.');
-    }
-
-    // You should also check filesize here.
-    if ($_FILES['projectFile']['size'] > 1000000) {
-        throw new RuntimeException('Exceeded filesize limit.');
-    }
-
-    // DO NOT TRUST $_FILES['upfile']['mime'] VALUE !!
-    // Check MIME Type by yourself.
-    $finfo = new finfo(FILEINFO_MIME_TYPE);
-    if (false === $ext = array_search(
-        $finfo->file($_FILES['projectFile']['tmp_name']),
-        array(
-            'jpg' => 'image/jpeg',
-            'png' => 'image/png',
-            'gif' => 'image/gif',
-        ),
-        true
-    )) {
-        throw new RuntimeException('Invalid file format.');
-    }
-	
-	var_dump($_FILES['projectFile']);
-	var_dump($_FILES);
-	var_dump($_FILES['projectFile']['tmp_name']);
-	
-	/*
-    // You should name it uniquely.
-    // DO NOT USE $_FILES['upfile']['name'] WITHOUT ANY VALIDATION !!
-    // On this example, obtain safe unique name from its binary data.
-    if (!move_uploaded_file(
-        $_FILES['projectFile']['tmp_name'],
-        sprintf('./uploads/%s.%s',
-            sha1_file($_FILES['projectFile']['tmp_name']),
-            $ext
-        )
-    )) {
-        throw new RuntimeException('Failed to move uploaded file.');
-    }
-
-    echo 'File is uploaded successfully.';
-
-} catch (RuntimeException $e) {
-
-    echo $e->getMessage();
-
-}*/
 
 // затваряне на връзката с базата
   $conn = null;

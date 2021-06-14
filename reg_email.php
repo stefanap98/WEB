@@ -1,3 +1,6 @@
+<?php   
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,10 +26,8 @@
 
 <body>
 <?php
-session_start();
 if (count($_POST) > 0) {
       $user_mail = $_POST['email_input'];
-      var_dump($user_mail);
       if (filter_var($user_mail, FILTER_VALIDATE_EMAIL)) {
         echo "is valid";
         $serverName = "localhost";
@@ -53,7 +54,7 @@ if (count($_POST) > 0) {
       }
 }
 ?>
-  <div>You have to enter your email to continue to use the site. It will be used to spam you just fyi.</div>
+  <h1>Enter your email. It will be used by teachers to send you information.</h1>
   <form method="POST">
     <label>Email :</label><input type="text" id="email_input" name="email_input" required/> 
     <input type="submit" value=" Submit " />

@@ -96,8 +96,12 @@ textarea {
   height: 150px;
 }
 
-#projectDate {
+#updateForm {
   display: none;
+}
+
+#updateButton {
+  display: block;
 }
 
 input[type="submit"], button, input[type="button"] {
@@ -152,11 +156,3 @@ input[type="submit"]:hover, button:hover, input[type="button"]:hover{
   color:red;
   font-size: 20px;
 }
-.update_form_hidden{
-  visibility: hidden;
-}
-
-.update_form_visible{
-  visibility: visible;
-}
-

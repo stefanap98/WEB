@@ -126,15 +126,11 @@ function gen_ccred($fname)
       die("Error connecting to SQL Server: " . $e->getMessage());
     }
 
-  if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-    echo "<p>Could not connect</p>";
-  }
-
   $res = read_files($fname);
+
   array_push($res, gen_admin_name("Rosen"));
   array_push($res, gen_admin_name("Stefan"));
-  array_push($res, gen_admin_name("Milen"));
+
   $safeguard = get_all_names($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
   foreach ($res as $i) {
     $i->send_to_db($conn,  $safeguard);

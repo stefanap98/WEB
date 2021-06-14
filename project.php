@@ -1,3 +1,6 @@
+<?php   
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +26,10 @@
 <body>
   <!-- php script за свързване с базата и извличане на данните по селектирания проект-->
 <?php
-session_start();
+$serverName = "localhost";
+$database = "appstoredb";
+$user = "root";
+$pass = "";
 if (isset($_SESSION["id"]) == false) {
 	header("Location:login.php");
   }
@@ -34,10 +40,6 @@ if (isset($_SESSION["id"]) == false) {
   }
 	if (isset($_POST['newProjectTitle']))
 	{
-	    $serverName = "localhost";
-	    $database = "appstoredb";
-	    $user = "root";
-	    $pass = "";
 	    try {
 	      $conn = new PDO(
 	        "mysql:host=$serverName;dbname=$database;",
@@ -118,10 +120,7 @@ if (isset($_SESSION["id"]) == false) {
 	    $id = $result->fetch();
 		$conn = null;
 		}
-  $serverName = "localhost";
-  $database = "appstoredb";
-  $user = "root";
-  $pass = "";
+
   try {
 	  $conn = new PDO(
 		  //"sqlsrv:data source=$serverName;initial catalog=$database; Integrated Security=SSPI;", -> startError connecting to SQL Server: could not find driver
@@ -141,7 +140,7 @@ if (isset($_SESSION["id"]) == false) {
 	  $sth = $conn->prepare($comments_quer);
 	  $sth->execute();
 	  $all_comments = $sth->fetchAll(); //обект с всички коментари по дадения проект
-
+	  
 	  //Тук пишем динамичната html страница
 	  echo "<div>
 		  <h1>" . $project['Title'] . "</h1>
@@ -150,18 +149,24 @@ if (isset($_SESSION["id"]) == false) {
 		  <div class='comment'>
 		  <h3 class='comment_header'> Project Description</h3> <p class='comment_body'>" . $project['Description'] . "</p>
 		  </div>
-		  <a href='ProjectsFileLocation/" . $project['FileLocation'] . "' download>
+		  <a href='ProjectsFileLocation/" . $project['GroupId'] . "/" . $project['FileLocation'] . "' download>
 		  <button> Download project </button>
 		  </a>";
 	  if ($project['GroupId'] == $_SESSION['group']){
 			$project_title = $project['Title'];
 			$project_description = $project['Description'];
-		  echo "<button onclick='toggleFormShowing()'>Update Project</button>
-				<form action='update_project.php class='update_form_hidden' id='update_form' method='post' enctype='multipart/form-data'>
-	  				<input type='text' class='update_form_hidden' id='newProjectTitle' name='newProjectTitle' value='$project_title' />
-	  				<input type='file' class='update_form_hidden' id='newProjectFile' name='newProjectFile'  />
-	  				<textarea id='newProjectDescription' class='update_form_hidden' name='newProjectDescription' value='$project_description' > </textarea>
-	  				<input type='submit' class='update_form_hidden' value='Update' id='submit_update'/>
+		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
+				<form id='updateForm' action='upload.php method='post' enctype='multipart/form-data'>
+					<label for='modProjectTitle'>Project Title</label>
+	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$project_title' required/>
+					
+					<label for='modProjectFile'>Upload new project</label>
+	  				<input type='file' id='modProjectFile' name='modProjectFile' required/>
+					
+					<label for='modProjectDescription'> Project Description</label>
+	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$project_description </textarea>
+					
+	  				<input type='submit' value='Update' />
 				</form> ";
 			}
 	echo "<h3> Comment Section </h3>";

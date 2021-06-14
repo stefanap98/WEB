@@ -1,5 +1,7 @@
 <!-- Всеки проект може/трябва да се отваря в нова страница с описание, бутон за сваляне и коментари -->
-
+<?php   
+  session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,13 +26,11 @@
 </head>
 
 <body>
-  <?php
-  session_start();
-  if (isset($_SESSION["id"]) == false && strlen($_SESSION["mail"]) == 0) {
-    header("Location:reg_email.php");
-  }
+  <?php  
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
+  } else if (strlen($_SESSION["mail"]) == 0) {
+    header("Location:reg_email.php");
   }
 
   echo "<p class='uname'> Logged in as: " . $_SESSION["name"] . "</p>"  
@@ -45,8 +45,6 @@
   ?>
 
   <h1> List of available projects</h1>
-
-  <div id="projects">
 
     <!-- php код за връзка с базата  -->
     <?php
@@ -72,17 +70,22 @@
 
     // Визуализиране на проектите 
     if (count($projects) > 0) {
+	  echo "<div id='projects'>";
       foreach ($projects as $row) {
-        echo "<div class='project' id='" . $row["id"] . "'>
-			<h3>" . $row["title"] . "</h3>
-			</div>";
+        echo "
+				<div class='project' id='" . $row["id"] . "'>
+				<h3>" . $row["title"] . "</h3>
+				</div>";
       }
+	  echo "</div>";
     } else {
-      echo "<h1 class='error'>0 results</h1>";
+      echo "<h1 class='error'>There are no projects uploaded yet!</h1>";
+      if($_SESSION["admin"] == 1) {
+		  echo "<h1 class='error'>Click the 'Admin' button to generate users!</h1>";
+	  }
     }
     $conn = null;
     ?>
-  </div>
   <button type="button" onclick="UploadForm()"> Upload new project </button>
 </body>
 </html>
