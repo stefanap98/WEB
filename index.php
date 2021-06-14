@@ -30,7 +30,7 @@
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
   } else if (strlen($_SESSION["mail"]) == 0) {
-    header("Location:reg_email.php");
+    header("Location:regEmail.php");
   }
 
   echo "<p class='uname'> Logged in as: " . $_SESSION["name"] . "</p>"  

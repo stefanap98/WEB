@@ -35,7 +35,7 @@ class profile
     $this->pass = $p;
     $this->team = $t;
   }
-  public function send_to_db($conn, $safeguard)
+  public function sendToDb($conn, $safeguard)
   {
     if (array_key_exists($this->name,  $safeguard) == true)
       echo "<p>Username $this->name exist already</p>";
@@ -50,25 +50,25 @@ class profile
   }
 }
 
-function gen_pass($name)
+function genPass($name)
 {
   return substr(sha1($name), 0, 5) . substr(md5($name), 0, 5);
 }
 
-function gen_names_team($team, $nrs)
+function genNamesTeam($team, $nrs)
 {
   $res = [];
   foreach ($nrs as $i) {
     $id = trim($i);
     $tmp = "team_" . $team . "_" . $id;
-    $tmp_user = new profile();
-    $tmp_user->cons($tmp,  gen_pass($tmp),$team);
-    array_push($res,  $tmp_user);
+    $tmpUser = new profile();
+    $tmpUser->cons($tmp,  genPass($tmp),$team);
+    array_push($res,  $tmpUser);
   }
   return $res;
 }
 
-function read_files($fname)
+function readFiles($fname)
 {
   $cred = [];
   $file = fopen($fname,  "r");
@@ -78,14 +78,14 @@ function read_files($fname)
     $data = explode(",", $line);
     if ($data and sizeof($data)   > 1)
       $data =  array_filter($data, "is_numeric");
-    foreach (gen_names_team($data[0],  array_slice($data, 1)) as  $i) {
+    foreach (genNamesTeam($data[0],  array_slice($data, 1)) as  $i) {
       array_push($cred,  $i);
     }
   }
   fclose($file);
   return $cred;
 }
-function get_all_names($conn)
+function getAllNames($conn)
 {
   $arr = array();
 
@@ -99,18 +99,18 @@ function get_all_names($conn)
   return $arr;
 }
 
-function gen_admin_name($name)
+function genAdminName($name)
 {
   $tmp = "admin_" . $name;
   $adm = new profile();
   $adm->admin = 1;
   $adm->name = $tmp;
   $adm->team = 0;
-  $adm->pass = gen_pass($tmp);
+  $adm->pass = genPass($tmp);
   return $adm;
 }
 
-function gen_ccred($fname)
+function genLogins($fname)
 {
     $serverName = "localhost";
     $database = "appstoredb";
@@ -126,19 +126,19 @@ function gen_ccred($fname)
       die("Error connecting to SQL Server: " . $e->getMessage());
     }
 
-  $res = read_files($fname);
+  $res = readFiles($fname);
 
-  array_push($res, gen_admin_name("Rosen"));
-  array_push($res, gen_admin_name("Stefan"));
+  array_push($res, genAdminName("Rosen"));
+  array_push($res, genAdminName("Stefan"));
 
-  $safeguard = get_all_names($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
+  $safeguard = getAllNames($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
   foreach ($res as $i) {
-    $i->send_to_db($conn,  $safeguard);
+    $i->sendToDb($conn,  $safeguard);
   }
   $conn = null;
 }
 
-gen_ccred("proojects.csv");
+genLogins("projects.csv");
 ?>
 </body>
 </html>

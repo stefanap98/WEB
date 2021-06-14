@@ -13,7 +13,7 @@ function Home() {
 }
 
 function UploadForm() {
-  window.location.href = "uploadForm.php";
+  window.location.href = "upload_form.php";
 }
 
 function toggleFormDisplay(){

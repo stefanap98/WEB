@@ -57,18 +57,18 @@
 		$projName = htmlspecialchars( basename( $_FILES["projectFile"]["name"])); //създавам променлива в която складирам името на файла
 		
 		// Код за качване на файла в папка
-		$target_dir = "ProjectsFileLocation/" . $_SESSION['group'] . "/";
-		$target_file = $target_dir . $projName;
+		$targetDir = "ProjectsFileLocation/" . $_SESSION['group'] . "/";
+		$targetFile = $targetDir . $projName;
 		$uploadOk = 1;
-		$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+		$fileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
 		
 		//Проверка дали има създадена папка за проекти, ако не я създаваме
-		if (!file_exists($target_dir)) {
-			mkdir($target_dir, 0777, true);
+		if (!file_exists($targetDir)) {
+			mkdir($targetDir, 0777, true);
 		}
 		
 		// Проверка дали съществува файла
-		if (file_exists($target_file)) {
+		if (file_exists($targetFile)) {
 			echo "<h1 class='error'>Sorry, file already exists.</h1>";
 			$uploadOk = 0;
 		}
@@ -91,11 +91,11 @@
 			echo "<h1 class='error'>Sorry, your file was not uploaded.</h1>";
 		// Ако всичко е добре качваме файла
 		} else {
-			if (move_uploaded_file($_FILES["projectFile"]["tmp_name"], $target_file)) {
+			if (move_uploaded_file($_FILES["projectFile"]["tmp_name"], $targetFile)) {
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
-				$gr_id = $_SESSION['group'];
+				$grpId = $_SESSION['group'];
 				$projDate = date('Y-m-d H:i:s');
-				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$projDate','$projDate','$projName')";
+				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$projDate','$projDate','$projName')";
 				$sth = $conn->prepare($sql);
 				$sth->execute();
 				echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";

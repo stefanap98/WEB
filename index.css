@@ -1,12 +1,3 @@
-/* Може да се разработят за различни устройства различни стилове, примерно за телефони и таблети съдържанието да е едно под друго, но няма нужда тъй като flexbox flex-wrap оправя положението*/ 
-
-/*
-@media screen and (max-width: 600px) {
-  .projects {
-    flex-direction: column;
-  }
-}*/
-
 body {
   background-color: rgb(24, 26, 27);
   color: rgb(255, 255, 255);
@@ -134,18 +125,18 @@ input[type="submit"]:hover, button:hover, input[type="button"]:hover{
 }
 
 /*Това е за заглавието на comments */
-.comment_header{
+.commentHeader{
   display:inline-block;
   margin: 5px 10px;
   padding: 7px;
 }
 
-.comment_header:first-child {
+.commentHeader:first-child {
 	border-bottom: 2px solid #809fff;
 	color: #4d79ff;
 }
 
-.comment_body {
+.commentBody {
   margin: 5px 10px;
   padding: 3px 7px;
   font-style: italic;

@@ -55,26 +55,26 @@ if (isset($_SESSION["id"]) == false) {
 		$sth = $conn->query($sql);
 		$project = $sth->fetch(); //object
 
-		$project_name = $_POST['newProjectTitle'];
-		$project_descr= $_POST['newProjectDescription'];
+		$projectName = $_POST['newProjectTitle'];
+		$projectDescr= $_POST['newProjectDescription'];
 		
 		if (isset($_POST['newProjectFile'])){
 			$projName = htmlspecialchars( basename( $_FILES["newProjectFile"]["name"])); //създавам променлива в която складирам името на файла
 			
 			// Код за качване на файла в папка
-			$target_dir = "ProjectsFileLocation/".$_SESSION['group']."/";
-			$target_file = $target_dir . $projName;
+			$targetDir = "ProjectsFileLocation/".$_SESSION['group']."/";
+			$targetFile = $targetDir . $projName;
 			$oldfile = $project['FileLocation'];
 			$uploadOk = 1;
-			$fileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+			$fileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
 			
 			//Проверка дали има създадена папка за проекти, ако не я създаваме
-			if (!file_exists($target_dir)) {
-				mkdir($target_dir, 0777, true);
+			if (!file_exists($targetDir)) {
+				mkdir($targetDir, 0777, true);
 			}
 			
 			// Проверка дали съществува файла
-			if (file_exists($target_file)) {
+			if (file_exists($targetFile)) {
 				echo "<h1 class='error'>Sorry, file already exists.</h1>";
 				$uploadOk = 0;
 			}
@@ -97,14 +97,14 @@ if (isset($_SESSION["id"]) == false) {
 				echo "<h1 class='error'>Sorry, your file was not uploaded.</h1>";
 			// Ако всичко е добре качваме файла
 			} else {
-				if (move_uploaded_file($_FILES["newProjectFile"]["tmp_name"], $target_file)) {
+				if (move_uploaded_file($_FILES["newProjectFile"]["tmp_name"], $targetFile)) {
 					
 					echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
-					$gr_id = $_SESSION['group'];
-					$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$gr_id','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
+					$grpId = $_SESSION['group'];
+					$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
 					$sth = $conn->prepare($sql);
 					$sth->execute();
-					if ($target_file != $oldfile){
+					if ($targetFile != $oldfile){
 						unlink($oldfile);
 					}
 					echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";
@@ -113,9 +113,9 @@ if (isset($_SESSION["id"]) == false) {
 				}
 			}
 		} 
-		$project_name = $_POST['newProjectTitle'];
-		$project_descr= $_POST['newProjectDescription'];
-        $sql = "UPDATE appstoredb.Projects SET Title='$project_name' Description='$project_descr' WHERE Id='$idd'";
+		$projectName = $_POST['newProjectTitle'];
+		$projectDescr= $_POST['newProjectDescription'];
+        $sql = "UPDATE appstoredb.Projects SET Title='$projectName' Description='$projectDescr' WHERE Id='$idd'";
 	    $result = $conn->query($sql);
 	    $id = $result->fetch();
 		$conn = null;
@@ -135,36 +135,36 @@ if (isset($_SESSION["id"]) == false) {
 	  $project = $sth->fetch(); //object
 
 	  //тука извличаме всички коментари от базата
-	  $prj_id = $_GET["id"];
-	  $comments_quer = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $prj_id ";
-	  $sth = $conn->prepare($comments_quer);
+	  $projId = $_GET["id"];
+	  $commentsQuery = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $projId ";
+	  $sth = $conn->prepare($commentsQuery);
 	  $sth->execute();
-	  $all_comments = $sth->fetchAll(); //обект с всички коментари по дадения проект
+	  $allComments = $sth->fetchAll(); //обект с всички коментари по дадения проект
 	  
 	  //Тук пишем динамичната html страница
 	  echo "<div>
 		  <h1>" . $project['Title'] . "</h1>
-		  <h3 class='comment_header'> Project created: <time>" . $project ['DateCreated'] . "</time> </h3>
-		  <h3 class='comment_header'> Project modified: <time>" . $project['DateModified'] . "</time> </h3>
+		  <h3 class='commentHeader'> Project created: <time>" . $project ['DateCreated'] . "</time> </h3>
+		  <h3 class='commentHeader'> Project modified: <time>" . $project['DateModified'] . "</time> </h3>
 		  <div class='comment'>
-		  <h3 class='comment_header'> Project Description</h3> <p class='comment_body'>" . $project['Description'] . "</p>
+		  <h3 class='commentHeader'> Project Description</h3> <p class='commentBody'>" . $project['Description'] . "</p>
 		  </div>
 		  <a href='ProjectsFileLocation/" . $project['GroupId'] . "/" . $project['FileLocation'] . "' download>
 		  <button> Download project </button>
 		  </a>";
 	  if ($project['GroupId'] == $_SESSION['group']){
-			$project_title = $project['Title'];
-			$project_description = $project['Description'];
+			$projectTitle = $project['Title'];
+			$projectDescription = $project['Description'];
 		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
 				<form id='updateForm' action='upload.php method='post' enctype='multipart/form-data'>
 					<label for='modProjectTitle'>Project Title</label>
-	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$project_title' required/>
+	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
 					
 					<label for='modProjectFile'>Upload new project</label>
 	  				<input type='file' id='modProjectFile' name='modProjectFile' required/>
 					
 					<label for='modProjectDescription'> Project Description</label>
-	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$project_description </textarea>
+	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$projectDescription </textarea>
 					
 	  				<input type='submit' value='Update' />
 				</form> ";
@@ -173,30 +173,30 @@ if (isset($_SESSION["id"]) == false) {
 	$usr = $_SESSION["admin"];
 	if($usr) {
 		echo  "<form action='comments.php' method='post'>
-				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here'></textarea> 
-				<input type='hidden' id='project_id' name ='project_id' value='" . $_GET["id"] . "'>
+				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here' required></textarea> 
+				<input type='hidden' id='projectId' name ='projectId' value='" . $_GET["id"] . "'>
 				<input type='submit'>
 			  </form>
 			  </div>";
 		
-		$comments_query = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
-		$sth = $conn->prepare($comments_query);
+		$commentsQueryy = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
+		$sth = $conn->prepare($commentsQueryy);
 		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
-		$user_info = $sth->fetchAll();
+		$userInfo = $sth->fetchAll();
 	}
-	foreach ($all_comments as $comm) {
-		$user_id = $comm["UserId"]; //променлива за това кой е писал коментара
+	foreach ($allComments as $comm) {
+		$userId = $comm["UserId"]; //променлива за това кой е писал коментара
 
 		// цялата информация за коментарите от таблицата
-		$user_query="SELECT Username FROM appstoredb.users WHERE ID = $user_id";
-		$sth = $conn->prepare($user_query);
+		$userQuery="SELECT Username FROM appstoredb.users WHERE ID = $userId";
+		$sth = $conn->prepare($userQuery);
 		$sth->execute();
 		$user = $sth->fetch();
 
 		echo "<div class='comment'>
-			<h3 class='comment_header'>" . $user["Username"] . "</h3>
-			<h3 class='comment_header'>" . $comm["Timestamp"] . "</h3>
-			<p class='comment_body'>" . $comm["Text"]  . "</p>
+			<h3 class='commentHeader'>" . $user["Username"] . "</h3>
+			<h3 class='commentHeader'>" . $comm["Timestamp"] . "</h3>
+			<p class='commentBody'>" . $comm["Text"]  . "</p>
 			</div>";
 
 	}

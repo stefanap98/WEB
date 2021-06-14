@@ -6,8 +6,8 @@ if (isset($_SESSION["id"]) == false) {
 
 if (isset($_SESSION["admin"]) == true) {
   $comment = $_POST["comment"];
-  $prj_id = $_POST["project_id"];
-  $us_id = $_SESSION["id"];
+  $projId = $_POST["projectId"];
+  $usrId = $_SESSION["id"];
   $date = date('Y-m-d H:i:s');
 
   $serverName = "localhost";
@@ -21,7 +21,7 @@ if (isset($_SESSION["admin"]) == true) {
 		$pass
 	  );
 	
-	$sql = "INSERT INTO `comments` (`ProjectId`,`UserId`,`Text`,`Timestamp`) VALUES ('$prj_id','$us_id','$comment','$date')";
+	$sql = "INSERT INTO `comments` (`ProjectId`,`UserId`,`Text`,`Timestamp`) VALUES ('$projId','$usrId','$comment','$date')";
 	$sth = $conn->prepare($sql);
 	$sth->execute();
 
@@ -30,5 +30,5 @@ if (isset($_SESSION["admin"]) == true) {
   }
   $conn = null;
 }
-header("Location:project.php?id=$prj_id");
+header("Location:project.php?id=$projId");
 ?>
