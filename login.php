@@ -55,7 +55,7 @@ if (count($_POST) > 0) {
     }
     $conn = null;
     if (strlen($_SESSION["mail"]) == 0) {
-      header("Location:regEmail.php");
+      header("Location:reg_email.php");
     }
 }
 if (isset($_SESSION["id"])) {

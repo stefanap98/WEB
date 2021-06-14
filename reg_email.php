@@ -27,8 +27,8 @@
 <body>
 <?php
 if (count($_POST) > 0) {
-      $user_mail = $_POST['email_input'];
-      if (filter_var($user_mail, FILTER_VALIDATE_EMAIL)) {
+      $userEmail = $_POST['emailInput'];
+      if (filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
         echo "is valid";
         $serverName = "localhost";
         $database = "appstoredb";
@@ -41,9 +41,9 @@ if (count($_POST) > 0) {
         }
         $idd = $_SESSION["id"];
         echo $idd;
-        $sql = "UPDATE appstoredb.Users SET Email='$user_mail' WHERE Id='$idd'";
+        $sql = "UPDATE appstoredb.Users SET Email='$userEmail' WHERE Id='$idd'";
         $conn->prepare($sql)->execute();
-        $_SESSION["mail"] = $user_mail ;
+        $_SESSION["mail"] = $userEmail ;
         $conn = null;
         if (isset($_SESSION["id"])) { 
           header("Location:index.php"); 
@@ -56,7 +56,8 @@ if (count($_POST) > 0) {
 ?>
   <h1>Enter your email. It will be used by teachers to send you information.</h1>
   <form method="POST">
-    <label>Email :</label><input type="text" id="email_input" name="email_input" required/> 
+    <label for="emailInput">Email</label>
+	<input type="text" id="emailInput" name="emailInput" required/> 
     <input type="submit" value=" Submit " />
   </form>
 </body>
