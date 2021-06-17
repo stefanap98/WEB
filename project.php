@@ -173,7 +173,7 @@ if (isset($_SESSION["id"]) == false) {
 	$usr = $_SESSION["admin"];
 	if($usr) {
 		echo  "<form action='comments.php' method='post'>
-				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here' required></textarea> 
+				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here [Note: atleast 5  long!]' required></textarea> 
 				<input type='hidden' id='projectId' name ='projectId' value='" . $_GET["id"] . "'>
 				<input type='submit'>
 			  </form>

@@ -29,7 +29,7 @@
 if (count($_POST) > 0) {
       $userEmail = $_POST['emailInput'];
       if (filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
-        echo "is valid";
+        echo "<p>Email is valid</p>";
         $serverName = "localhost";
         $database = "appstoredb";
         $user = "root";

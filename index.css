@@ -87,12 +87,12 @@ textarea {
   height: 150px;
 }
 
-#updateForm {
-  display: none;
-}
-
 #updateButton {
   display: block;
+}
+
+#updateForm {
+  display: none;
 }
 
 input[type="submit"], button, input[type="button"] {
@@ -146,4 +146,25 @@ input[type="submit"]:hover, button:hover, input[type="button"]:hover{
 .error {
   color:red;
   font-size: 20px;
+}
+
+#loginForm {
+    margin-left: 25%;
+    margin-right:25%;
+    width: 50%;
+	padding: 2% 0%;
+	border-width: 1%;
+}
+
+#loginForm > input {
+	width: 94%;
+	margin: 2%;
+}
+
+#loginForm > input[type=submit] {
+	width: 96%;
+}
+
+input[type="button"], button {
+	box-shadow: 2px 2px 10px 5px blue;
 }

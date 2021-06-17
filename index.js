@@ -18,9 +18,9 @@ function UploadForm() {
 
 function toggleFormDisplay(){
   var form = document.getElementById("updateForm");
-  if(form.style.display == "none") {
-	form.style.display = "block";
-  } else {
+  if(form.style.display == "block") {
 	form.style.display = "none";
+	return;
   }
+  form.style.display = "block";
 }

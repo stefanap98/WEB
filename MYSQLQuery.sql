@@ -30,5 +30,9 @@ CREATE TABLE IF NOT EXISTS Comments (
   FOREIGN KEY (UserId) REFERENCES Users(Id)
 );
 
-INSERT INTO Users (Username, GroupId,`Password`,IsTeacher)
-Values ("Milen",'0','admin','1');
+INSERT INTO Users (Username, GroupId,`Password`,IsTeacher) 
+SELECT 'Milen','0','pass123','1' 
+WHERE NOT EXISTS (SELECT Username FROM Users 
+     WHERE Username = 'Milen' LIMIT 1) 
+
+

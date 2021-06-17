@@ -1,5 +1,24 @@
 <?php   
   session_start();
+  
+  $host = "localhost";
+  $database = "appstoredb";
+  $user = "root";
+  $password = "";
+  # MySQL with PDO_MYSQL  
+  $db = new PDO("mysql:host=$host;dbname=$database", $user, $password);
+
+  $query = file_get_contents("MYSQLQuery.sql");
+
+  $stmt = $db->prepare($query);
+  $stmt->execute();
+  
+/*Проверка дали се е изпълнил sql файла
+  if ($stmt->execute()) {
+       echo "Success";
+  } else { 
+       echo "Fail";
+  }*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,20 +70,24 @@ if (count($_POST) > 0) {
       $_SESSION["group"] =  $id['GroupId'];
       $_SESSION["mail"] =  $id['Email'];
     } else {
-      echo "<p>Invalid Username or Password!</p>";
+      echo "<h1 class='error'>Invalid Username or Password!</h1>";
     }
-    $conn = null;
+    $conn = null;/*
     if (strlen($_SESSION["mail"]) == 0) {
       header("Location:reg_email.php");
-    }
+    }*/
 }
 if (isset($_SESSION["id"])) {
   header("Location:index.php");
 }
 ?>
-  <form method="post"> <!--action=""> Form Submission subsection of the current HTML5 draft does not allow action="" (empty attribute). It is against the specification.-->
-    <label>UserName :</label><input type="text" name="username" required/>
-    <label>Password :</label><input type="password" name="password" required/>
+  <form id="loginForm" method="post"> <!--action=""> Form Submission subsection of the current HTML5 draft does not allow action="" (empty attribute). It is against the specification.-->
+    <label>UserName :</label>
+	<input type="text" name="username" required/>
+	
+    <label>Password :</label>
+	<input type="password" name="password" required/>
+	
     <input type="submit" value=" Submit " />
   </form>
 </body>
