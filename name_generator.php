@@ -129,8 +129,9 @@ function genLogins($fname)
   $res = readFiles($fname);
 
   array_push($res, genAdminName("Rosen"));
+  /*
   array_push($res, genAdminName("Stefan"));
-
+*/
   $safeguard = getAllNames($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
   foreach ($res as $i) {
     $i->sendToDb($conn,  $safeguard);

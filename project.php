@@ -172,6 +172,35 @@ if (isset($_SESSION["id"]) == false) {
 	echo "<h3> Comment Section </h3>";
 	$usr = $_SESSION["admin"];
 	if($usr) {
+		//Опция за показване на емайлите, ако съществува 
+		//Първо извличаме GroupId на проекта
+		$projId = $_GET["id"];
+	    $groupIdQuery = "SELECT GroupId FROM appstoredb.projects Where Id=$projId; ";
+	    $sth = $conn->prepare($groupIdQuery);
+	    $sth->execute();
+	    $groupId = $sth->fetch();
+		$grpId = $groupId['GroupId'];
+
+		//След това с този GroupId извличаме емайлите на хората
+		$emailQuery = "SELECT Email FROM appstoredb.users Where GroupId = $grpId";
+		$sth = $conn->prepare($emailQuery);
+		$sth->execute();
+		$emails = $sth->fetchAll();
+		
+		//Визуализираме емайлите
+		echo "<h1>Email: ";
+		$emailCount = 1;
+		foreach ($emails as $em) {
+			if(strlen($em['Email']) > 0 ) {
+				if($emailCount > 1) {
+					echo " ; " ;
+				}
+				echo $em['Email'];
+				$emailCount++;
+			}
+		}
+		echo "</h1>";
+		
 		echo  "<form action='comments.php' method='post'>
 				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here [Note: atleast 5  long!]' required></textarea> 
 				<input type='hidden' id='projectId' name ='projectId' value='" . $_GET["id"] . "'>

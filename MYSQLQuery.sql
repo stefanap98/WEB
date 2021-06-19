@@ -30,9 +30,12 @@ CREATE TABLE IF NOT EXISTS Comments (
   FOREIGN KEY (UserId) REFERENCES Users(Id)
 );
 
-INSERT INTO Users (Username, GroupId,`Password`,IsTeacher) 
-SELECT 'Milen','0','pass123','1' 
+INSERT INTO Users (Username, GroupId,Email,`Password`,IsTeacher) 
+SELECT 'Milen','0','milenp@fmi.uni-sofia.bg','pass123','1' 
 WHERE NOT EXISTS (SELECT Username FROM Users 
-     WHERE Username = 'Milen' LIMIT 1) 
+     WHERE Username = 'Milen' LIMIT 1);
 
-
+INSERT INTO Users (Username, GroupId,Email,`Password`,IsTeacher) 
+SELECT 'Stefan','0','kvaki4@abv.bg','pass123',0 
+WHERE NOT EXISTS (SELECT Username FROM Users 
+     WHERE Username = 'Stefan' LIMIT 1) 
