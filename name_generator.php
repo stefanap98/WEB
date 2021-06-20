@@ -99,14 +99,18 @@ function getAllNames($conn)
   return $arr;
 }
 
-function genAdminName($name)
+function genAdminName($name,$pass="")
 {
   $tmp = "admin_" . $name;
   $adm = new profile();
   $adm->admin = 1;
   $adm->name = $tmp;
   $adm->team = 0;
-  $adm->pass = genPass($tmp);
+  if ($pass != "")
+    $adm->pass = $pass;
+  else 
+    $adm->pass = genPass($tmp);
+  
   return $adm;
 }
 
@@ -125,18 +129,60 @@ function genLogins($fname)
 
   $res = readFiles($fname);
 
-  array_push($res, genAdminName("Rosen"));
-  /*
-  array_push($res, genAdminName("Stefan"));
-*/
   $safeguard = getAllNames($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
   foreach ($res as $i) {
     $i->sendToDb($conn,  $safeguard);
   }
   $conn = null;
 }
+// teachers
+function parseTeacherFiles($name){
+  $cred = [];
+  $file = fopen($name,  "r");
+  while (!feof($file)) {
+    $line = fgets($file);
+    $data = explode(",", $line);
+    if ($data and sizeof($data)   > 1){
+      $data[0] =  str_replace(' ', '', $data[0]);
+      $data[1] =  str_replace(' ', '', $data[1]);
+      if ($data[1] != "" ){
+        array_push($cred,genAdminName($data[0],$data[1]));
+      }
+        array_push($cred,genAdminName($data[0]));
+    }
+    else if ($data and sizeof($data) == 1){
+      $data[0] =  str_replace(' ', '', $data[0]);
+      if ($data[0] != ""){
+        array_push($cred,genAdminName($data[0]));
+      }
+    }
+  }
+  fclose($file);
+  return $cred;
+}
 
-genLogins("projects.csv");
+function genTeachers($fname)
+{
+    require 'db_setup.php';
+    try {
+      $conn = new PDO(
+        "mysql:host=$serverName;dbname=$database;",
+        $user,
+        $pass
+      );
+    } catch (PDOException $e) {
+      die("Error connecting to SQL Server: " . $e->getMessage());
+    }
+
+  $res = parseTeacherFiles($fname);
+  $safeguard = getAllNames($conn); // make a safeguard for generating names once and do iteraetive generation if name is added
+  foreach ($res as $i) {
+    $i->sendToDb($conn,  $safeguard);
+  }
+  $conn = null;
+}
+genLogins("csv/projects.csv");
+genTeachers("csv/teachers.csv");
 ?>
 </body>
 </html>
