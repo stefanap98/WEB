@@ -26,10 +26,8 @@ h1, h3, p {
   font-size: 16px;
   background-color: rgb(36, 39, 41);
   border-style: outset;
-  
   margin: 1%;
   width: 44%;
-  text-align: center;
 }
 
 #projects > div:hover {
