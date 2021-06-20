@@ -87,7 +87,7 @@
         }
         echo "
         <div class='project' id='" . $row["id"] . "' project_group=".$row["groupid"]." uploaded_time='".$row["datemodified"]."' project_name='".$row["title"]."'>
-		<h3 project_id='".$row["Id"] ."'> ". $row["title"] . "</h3>
+		<h3 project_id='".$row["id"] ."'> ". $row["title"] . "</h3>
 		</div>" ;
     }
     if (!$onetime_echo){

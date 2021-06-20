@@ -17,17 +17,19 @@ h1, h3, p {
 	text-align: center;
 	background-color: rgba(0, 64, 255, 0.7);
 	flex-wrap: wrap;
-	margin: 10px;
+	margin: 1%;
+	width: 98%;
 }
 
 #projects > div {
   border: 7px solid rgb(60, 65, 68);
-  min-width:45.9%;
   font-size: 16px;
-  margin: 16px 12px;
-  padding: 15px;
   background-color: rgb(36, 39, 41);
   border-style: outset;
+  
+  margin: 1%;
+  width: 44%;
+  text-align: center;
 }
 
 #projects > div:hover {
@@ -39,8 +41,7 @@ h1, h3, p {
   background-color: yellow;
 }
 
-/* Курсора на choose files бутона не се показва където искам */
-#projects > div, #projectName, input[type="submit"], button {
+#projects > div, #projectName, input[type="submit"], button, #projectFile {
   cursor: pointer;
 }
 
