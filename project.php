@@ -48,7 +48,7 @@ if (isset($_SESSION["id"]) == false) {
 	    }
 		//=========================
 		$idd = $_GET["id"];
-		$sql = "SELECT * FROM appstoredb.projects WHERE id = $idd";
+		$sql = "SELECT * FROM appstoredb.Projects WHERE id = $idd";
 		$sth = $conn->query($sql);
 		$project = $sth->fetch(); //object
 
@@ -98,7 +98,7 @@ if (isset($_SESSION["id"]) == false) {
 					
 					echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
 					$grpId = $_SESSION['group'];
-					$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
+					$sql = "INSERT INTO `Projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
 					$sth = $conn->prepare($sql);
 					$sth->execute();
 					if ($targetFile != $oldfile){
@@ -126,7 +126,7 @@ if (isset($_SESSION["id"]) == false) {
 		  $pass
 	  );
 
-	  $sql = "SELECT * FROM appstoredb.projects WHERE id = :id";
+	  $sql = "SELECT * FROM appstoredb.Projects WHERE id = :id";
 	  $sth = $conn->prepare($sql);
 	  $sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
 	  $project = $sth->fetch(); //object
@@ -172,14 +172,14 @@ if (isset($_SESSION["id"]) == false) {
 		//Опция за показване на емайлите, ако съществува 
 		//Първо извличаме GroupId на проекта
 		$projId = $_GET["id"];
-	    $groupIdQuery = "SELECT GroupId FROM appstoredb.projects Where Id=$projId; ";
+	    $groupIdQuery = "SELECT GroupId FROM appstoredb.Projects Where Id=$projId; ";
 	    $sth = $conn->prepare($groupIdQuery);
 	    $sth->execute();
 	    $groupId = $sth->fetch();
 		$grpId = $groupId['GroupId'];
 
 		//След това с този GroupId извличаме емайлите на хората
-		$emailQuery = "SELECT Email FROM appstoredb.users Where GroupId = $grpId";
+		$emailQuery = "SELECT Email FROM appstoredb.Users Where GroupId = $grpId";
 		$sth = $conn->prepare($emailQuery);
 		$sth->execute();
 		$emails = $sth->fetchAll();
@@ -214,7 +214,7 @@ if (isset($_SESSION["id"]) == false) {
 		$userId = $comm["UserId"]; //променлива за това кой е писал коментара
 
 		// цялата информация за коментарите от таблицата
-		$userQuery="SELECT Username FROM appstoredb.users WHERE ID = $userId";
+		$userQuery="SELECT Username FROM appstoredb.Users WHERE ID = $userId";
 		$sth = $conn->prepare($userQuery);
 		$sth->execute();
 		$user = $sth->fetch();
