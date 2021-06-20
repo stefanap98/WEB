@@ -47,38 +47,33 @@
     <!-- php код за връзка с базата  -->
     <?php
     require 'db_setup.php';
-    //try {
-    //  $conn = new PDO(
-    //    "mysql:host=$serverName;dbname=$database;",
-    //    $user,
-    //    $pass
-    //  );
-    //} catch (PDOException $e) {
-    //  die("Error connecting to SQL Server: " . $e->getMessage());
-    //}
-
-    //// избираме id, заглавие и описание на проекта от базата
-    //$sql = "SELECT id, title, `description` FROM appstoredb.projects";
-
-    $conn = new mysqli($serverName, $user, $pass, $database);
-    $sql = "SELECT id ,groupid ,datemodified, title FROM appstoredb.Projects";
+    try {
+      $conn = new PDO(
+        "mysql:host=$serverName;dbname=$database;",
+        $user,
+        $pass
+      );
+    } catch (PDOException $e) {
+      die("Error connecting to SQL Server: " . $e->getMessage());
+    }
+    // избираме id, заглавие и описание на проекта от базата
+    $sql = "SELECT id ,groupid ,datemodified, title FROM appstoredb.Projects  ORDER BY datemodified ASC ";
     $result = $conn->query($sql);
-    $projects = $result;
-
-
-
-    $result = $conn->query($sql);
-    $projects = $result;
-    //$projects = $result->fetchAll();
+    $projects = $result->fetchAll();
     $onetime_echo =1;
     foreach ($projects as $row) {
         if ($onetime_echo){
-          echo "<label for='cars' class='sorting'>Sort by:</label> 
-            <select class='sorting' id='sort_criteria' name='sort_criteria' onchange='Sort(this.value)'>
+          echo "<label for='sorts' class='sorting'>Sort by:</label> 
+            <select class='sorting' id='sort_criteria' name='sort_criteria' onchange='Sort()'>
             <option value='date'>Date Uploaded</option>
             <option value='last_uploaded'>Last Updated</option>
             <option value='name'>Name</option>
             <option value='group'>Group</option>
+          </select>";
+          echo "<label for='type' class='sorting'>Order:</label> 
+            <select class='sorting' id='sort_type' name='sort_type' onchange='Sort()'>
+            <option value='asc'>Ascending</option>
+            <option value='desc'>Descending</option>
           </select>";
           echo "<div class='sorting' id='searchWrapper'>
               <input
