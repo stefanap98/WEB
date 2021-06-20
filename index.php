@@ -21,7 +21,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Вмъкване на външен javascript файл -->
-  <script src="index.js?<?php echo time(); ?>"></script>
+  <script src="javascript/index.js?<?php echo time(); ?>"></script>
 </head>
 
 <body onload="javascript:load_sug()">
@@ -47,20 +47,29 @@
     <!-- php код за връзка с базата  -->
     <?php
     require 'db_setup.php';
-    try {
-      $conn = new PDO(
-        "mysql:host=$serverName;dbname=$database;",
-        $user,
-        $pass
-      );
-    } catch (PDOException $e) {
-      die("Error connecting to SQL Server: " . $e->getMessage());
-    }
+    //try {
+    //  $conn = new PDO(
+    //    "mysql:host=$serverName;dbname=$database;",
+    //    $user,
+    //    $pass
+    //  );
+    //} catch (PDOException $e) {
+    //  die("Error connecting to SQL Server: " . $e->getMessage());
+    //}
 
-    // избираме id, заглавие и описание на проекта от базата
-    $sql = "SELECT id, title, `description` FROM appstoredb.projects";
+    //// избираме id, заглавие и описание на проекта от базата
+    //$sql = "SELECT id, title, `description` FROM appstoredb.projects";
+
+    $conn = new mysqli($serverName, $user, $pass, $database);
+    $sql = "SELECT id ,groupid ,datemodified, title FROM appstoredb.Projects";
     $result = $conn->query($sql);
-    $projects = $result->fetchAll();
+    $projects = $result;
+
+
+
+    $result = $conn->query($sql);
+    $projects = $result;
+    //$projects = $result->fetchAll();
     $onetime_echo =1;
     foreach ($projects as $row) {
         if ($onetime_echo){
@@ -100,5 +109,6 @@
     $conn = null;
     ?>
   <button type="button" onclick="UploadForm()"> Upload new project </button>
+  <script src="javascript/sorting.js?<?php echo time(); ?>"></script>
 </body>
 </html>

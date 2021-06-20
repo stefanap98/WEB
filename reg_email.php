@@ -20,7 +20,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
   <!-- Вмъкване на външен javascript файл -->
-  <script src="index.js?<?php echo time(); ?>"></script>
+  <script src="javascript/index.js?<?php echo time(); ?>"></script>
 
 </head>
 
