@@ -47,10 +47,7 @@
 <?php
 $message = "";
 if (count($_POST) > 0) {
-    $serverName = "localhost";
-    $database = "appstoredb";
-    $user = "root";
-    $pass = "";
+    require 'db_setup.php';
     try {
       $conn = new PDO(
         "mysql:host=$serverName;dbname=$database;",

@@ -26,10 +26,7 @@
 <body>
   <!-- php script за свързване с базата и извличане на данните по селектирания проект-->
 <?php
-$serverName = "localhost";
-$database = "appstoredb";
-$user = "root";
-$pass = "";
+require 'db_setup.php';
 if (isset($_SESSION["id"]) == false) {
 	header("Location:login.php");
   }

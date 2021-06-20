@@ -22,10 +22,9 @@
 
   <!-- Вмъкване на външен javascript файл -->
   <script src="index.js?<?php echo time(); ?>"></script>
-
 </head>
 
-<body>
+<body onload="javascript:load_sug()">
   <?php  
   if (isset($_SESSION["id"]) == false) {
     header("Location:login.php");
@@ -45,14 +44,9 @@
   ?>
 
   <h1> List of available projects</h1>
-
     <!-- php код за връзка с базата  -->
     <?php
-
-    $serverName = "localhost";
-    $database = "appstoredb";
-    $user = "root";
-    $pass = "";
+    require 'db_setup.php';
     try {
       $conn = new PDO(
         "mysql:host=$serverName;dbname=$database;",
@@ -67,23 +61,42 @@
     $sql = "SELECT id, title, `description` FROM appstoredb.projects";
     $result = $conn->query($sql);
     $projects = $result->fetchAll();
-
-    // Визуализиране на проектите 
-    if (count($projects) > 0) {
-	  echo "<div id='projects'>";
-      foreach ($projects as $row) {
+    $onetime_echo =1;
+    foreach ($projects as $row) {
+        if ($onetime_echo){
+          echo "<label for='cars' class='sorting'>Sort by:</label> 
+            <select class='sorting' id='sort_criteria' name='sort_criteria' onchange='Sort(this.value)'>
+            <option value='date'>Date Uploaded</option>
+            <option value='last_uploaded'>Last Updated</option>
+            <option value='name'>Name</option>
+            <option value='group'>Group</option>
+          </select>";
+          echo "<div class='sorting' id='searchWrapper'>
+              <input
+                type='text'
+                name='searchBar'
+                id='searchBar'
+                placeholder='Search' />
+            </div>";
+        echo "<div id='projects'>";
+          $onetime_echo =0;
+        }
         echo "
-				<div class='project' id='" . $row["id"] . "'>
-				<h3>" . $row["title"] . "</h3>
-				</div>";
-      }
-	  echo "</div>";
-    } else {
-      echo "<h1 class='error'>There are no projects uploaded yet!</h1>";
-      if($_SESSION["admin"] == 1) {
-		  echo "<h1 class='error'>Click the 'Admin' button to generate users!</h1>";
-	  }
+        <div class='project' id='" . $row["id"] . "' project_group=".$row["groupid"]." uploaded_time='".$row["datemodified"]."' project_name='".$row["title"]."'>
+		<h3 project_id='".$row["Id"] ."'> ". $row["title"] . "</h3>
+		</div>" ;
     }
+    if (!$onetime_echo){
+      echo "</div>";
+    }
+
+    if ($onetime_echo){
+      echo "<h1 class='error'>There are no projects uploaded yet!</h1>";
+      if($_SESSION["admin"] == 1) {
+		  echo "<h1 class='error'>Click the 'Admin' button to generate users!</h1>";
+	  }
+    }
+
     $conn = null;
     ?>
   <button type="button" onclick="UploadForm()"> Upload new project </button>

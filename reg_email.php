@@ -30,10 +30,8 @@ if (count($_POST) > 0) {
       $userEmail = $_POST['emailInput'];
       if (filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
         echo "<p>Email is valid</p>";
-        $serverName = "localhost";
-        $database = "appstoredb";
-        $user = "root";
-        $pass = "";
+
+        require 'db_setup.php';
         try {
           $conn = new PDO( "mysql:host=$serverName;dbname=$database;", $user, $pass);
         } catch (PDOException $e) {

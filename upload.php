@@ -29,15 +29,13 @@
 // с $_POST достъпваме елементите а с $_FILES файловете пратени от формата от файл Index.php
 
 //връзка с базата
-    $serverName = "localhost";
-    $database = "appstoredb";
-	$user = "root"; 
-	$pass = "";
+	
+	require 'db_setup.php';
     try {
         $conn = new PDO(
-            "mysql:host=$serverName;dbname=$database;",
-            $user,
-            $pass
+        "mysql:host=$serverName;dbname=$database;",
+        $user,
+        $pass
         );
     }
     catch(PDOException $e) {
