@@ -26,6 +26,17 @@
 
 <body>
 <?php
+  if (isset($_SESSION["id"]) == false) {
+    header("Location:login.php");
+  }
+  echo "<p class='uname'> Logged in as: " . $_SESSION["name"] . "</p>"  
+  ?>
+  <input type="button" class="logout" value="Log Out" onClick="document.location.href='logout.php'" />
+  <?php 
+  if ($_SESSION["admin"] == 1) {
+    echo "<input type='button' class='admin' value='Admin' onClick=\"document.location.href='admin_page.php'\" />" ;
+	}
+
 if (count($_POST) > 0) {
       $userEmail = $_POST['emailInput'];
       if (filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
