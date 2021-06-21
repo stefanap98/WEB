@@ -5,15 +5,12 @@ if (isset($_SESSION["id"]) == false) {
 }
 
 if (isset($_SESSION["admin"]) == true) {
-  $comment = $_POST["comment"];
+  $comment = htmlspecialchars($_POST["comment"]);
   $projId = $_POST["projectId"];
   $usrId = $_SESSION["id"];
   $date = date('Y-m-d H:i:s');
-
-  $serverName = "localhost";
-  $database = "appstoredb";
-  $user = "root";
-  $pass = "";
+  
+  require 'db_setup.php';
   try {
     $conn = new PDO(
 		"mysql:host=$serverName;dbname=$database;",

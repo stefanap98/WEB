@@ -43,7 +43,9 @@
     }
 
 	//проверка дали съществува такъв проект
-	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='".$_POST["projectTitle"]."'"; //тука може да се провери и името на файла дали съществува в базата
+	$prjTitle = htmlspecialchars($_POST["projectTitle"]);
+	$prjDesc = htmlspecialchars($_POST["projectDescription"]);
+	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='".$prjTitle."'"; //тука може да се провери и името на файла дали съществува в базата
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
 	$result = $stmt->fetchAll();
@@ -93,7 +95,7 @@
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
 				$grpId = $_SESSION['group'];
 				$projDate = date('Y-m-d H:i:s');
-				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$projDate','$projDate','$projName')";
+				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$prjTitle','$prjDesc','$projDate','$projDate','$projName')";
 				$sth = $conn->prepare($sql);
 				$sth->execute();
 				echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";

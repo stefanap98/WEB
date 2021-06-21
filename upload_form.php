@@ -21,9 +21,6 @@
 </head>
 
 <body>
-	<!--Some rules to follow for the HTML form above:
-		Make sure that the form uses method="post"
-		The form also needs the following attribute: enctype="multipart/form-data". It specifies which content-type to use when submitting the form -->
 	<!-- Post заявка със задаване на проекта и информация за нея -->
 	<form action="upload.php" method="post" enctype="multipart/form-data">        
 	  <label for="projectTitle">Project Title</label>

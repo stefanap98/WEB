@@ -57,7 +57,7 @@ if (count($_POST) > 0) {
     } catch (PDOException $e) {
       die("Error connecting to SQL Server: " . $e->getMessage());
     }
-    $sql = "SELECT * FROM appstoredb.Users WHERE Username='" . $_POST["username"] . "' and Password = '" . $_POST["password"] . "'";
+    $sql = "SELECT * FROM appstoredb.Users WHERE Username='" . htmlspecialchars($_POST["username"]) . "' and Password = '" . htmlspecialchars($_POST["password"]) . "'";
     $result = $conn->query($sql);
     $id = $result->fetch();
     if (is_array($id)) {
@@ -69,16 +69,14 @@ if (count($_POST) > 0) {
     } else {
       echo "<h1 class='error'>Invalid Username or Password!</h1>";
     }
-    $conn = null;/*
-    if (strlen($_SESSION["mail"]) == 0) {
-      header("Location:reg_email.php");
-    }*/
+    $conn = null;
+
 }
 if (isset($_SESSION["id"])) {
   header("Location:index.php");
 }
 ?>
-  <form id="loginForm" method="post"> <!--action=""> Form Submission subsection of the current HTML5 draft does not allow action="" (empty attribute). It is against the specification.-->
+  <form id="loginForm" method="post">
     <label>UserName :</label>
 	<input type="text" name="username" required/>
 	
