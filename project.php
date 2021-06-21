@@ -152,19 +152,35 @@ if (isset($_SESSION["id"]) == false) {
 	  if ($project['GroupId'] == $_SESSION['group']){
 			$projectTitle = $project['Title'];
 			$projectDescription = $project['Description'];
+			/* Това съм го закоментирал защото не ми дава да закоментирам нещата за файла
 		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
-				<form id='updateForm' action='upload.php method='post' enctype='multipart/form-data'>
+				<form id='updateForm' action='update_project.php method='post' enctype='multipart/form-data'>
 					<label for='modProjectTitle'>Project Title</label>
 	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
 					
 					<label for='modProjectFile'>Upload new project</label>
-	  				<input type='file' id='modProjectFile' name='modProjectFile' required/>
+	  				<input type='file' id='modProjectFile' name='modProjectFile'/>
 					
 					<label for='modProjectDescription'> Project Description</label>
 	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$projectDescription </textarea>
 					
 	  				<input type='submit' value='Update' />
 				</form> ";
+				*/
+
+		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
+				<form id='updateForm' action='update_project.php' method='post' >
+					<label for='modProjectTitle'>Project Title</label>
+	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
+					
+					<label for='modProjectDescription'> Project Description</label>
+	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$projectDescription </textarea>
+					
+					<input type='hidden' name='modProjId' value='$projId'>
+					
+	  				<input type='submit' value='Update' />
+				</form> ";
+
 			}
 	echo "<h3> Comment Section </h3>";
 	$usr = $_SESSION["admin"];
@@ -200,12 +216,12 @@ if (isset($_SESSION["id"]) == false) {
 		
 		echo  "<form action='comments.php' method='post'>
 				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here [Note: atleast 5  long!]' required></textarea> 
-				<input type='hidden' id='projectId' name ='projectId' value='" . $_GET["id"] . "'>
+				<input type='hidden' id='projectId' name ='projectId' value='$projId'>
 				<input type='submit'>
 			  </form>
 			  </div>";
 		
-		$commentsQueryy = "SELECT * FROM appstoredb.Comments WHERE ProjectId = :id;";
+		$commentsQueryy = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $projId;";
 		$sth = $conn->prepare($commentsQueryy);
 		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
 		$userInfo = $sth->fetchAll();
