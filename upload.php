@@ -93,7 +93,7 @@
 			if (move_uploaded_file($_FILES["projectFile"]["tmp_name"], $targetFile)) {
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
 				$grpId = $_SESSION['group'];
-				$projDate = date('Y-m-d H:i:s');
+				$projDate = date('Y-m-d H:i:s', strtotime('+1 hour'));
 				$sql = "INSERT INTO `projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$prjTitle','$prjDesc','$projDate','$projDate','$projName')";
 				$sth = $conn->prepare($sql);
 				$sth->execute();

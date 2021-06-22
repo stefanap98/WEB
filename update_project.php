@@ -43,10 +43,10 @@
 	$projId = $_POST["modProjId"];
 	$updateProjectTitle = htmlspecialchars($_POST["modProjectTitle"]);
 	$updateProjectDescription = htmlspecialchars($_POST["modProjectDescription"]);
-	$projModDate = date('Y-m-d H:i:s');
+	$projModDate = date('Y-m-d H:i:s', strtotime('+1 hour'));
 	
 	//проверка дали съществува такъв проект
-	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='$updateProjectTitle'";
+	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='$updateProjectTitle' And Id!=$projId";
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
 	$result = $stmt->fetchAll();
