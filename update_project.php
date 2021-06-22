@@ -45,16 +45,73 @@
 	$updateProjectDescription = htmlspecialchars($_POST["modProjectDescription"]);
 	$projModDate = date('Y-m-d H:i:s');
 	
-	//Заявка към базата данни за Update-ване на ред
-	$sql = "UPDATE `appstoredb`.`projects` SET `Title` = '$updateProjectTitle', `Description` = '$updateProjectDescription', `DateModified` = '$projModDate' WHERE Id = '$projId';"; 
+	//проверка дали съществува такъв проект
+	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='$updateProjectTitle'";
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
+	$result = $stmt->fetchAll();
 	
-	
+	if($result==null || $result[0][0] >= 1) {
+	  echo "<h1 class='error'> Warning: Project with this title already exists! Project hasn't been updated...</h1>";
+		} else {
+		
+		//Заявка към базата за извличане на името и директорията на стария файл
+		$sql = "Select GroupId, FileLocation From appstoredb.projects WHERE Id = '$projId';";
+		$stmt = $conn->prepare($sql);
+		$stmt->execute();
+		$result = $stmt->fetch();
+		$oldFile = "ProjectsFileLocation/" . $result['GroupId'] . "/" . $result['FileLocation'];
+		
+		// Процедури за файла
+		$projName = htmlspecialchars( basename( $_FILES["modProjectFile"]["name"])); //създавам променлива в която складирам името на файла
+			
+		// Код за качване на файла в папка
+		$targetDir = "ProjectsFileLocation/" . $result['GroupId'] . "/";
+		$targetFile = $targetDir . $projName;
+		$uploadOk = 1;
+		$fileType = strtolower(pathinfo($targetFile,PATHINFO_EXTENSION));
+			
+		// Проверка дали файла надвишава лимит
+		if ($_FILES["modProjectFile"]["size"] > 35000000) {
+			echo "<h1 class='error'>Sorry, your file is too large.</h1>";
+			$uploadOk = 0;
+		}
+			
+		// Проверка за extensiona
+		if($fileType != "zip" && $fileType != "rar" && $fileType != "gz"
+		&& $fileType != "tar" && $fileType != "7z") {
+			echo "<h1 class='error'>Sorry, only ZIP, RAR, GZIP, TAR or 7ZIP files are allowed.</h1>";
+			$uploadOk = 0;
+		}
+			
+		// Проверка дали променливата $uploadOk има стойност 0 поради грешка
+		if ($uploadOk == 0) {
+			echo "<h1 class='error'>Sorry, your file was not uploaded.</h1>";
+		// Ако всичко е добре качваме файла
+		} else {
+			if (move_uploaded_file($_FILES["modProjectFile"]["tmp_name"], $targetFile)) {
+				//Да изтрием стария файл, ако е с различно име
+				if ($targetFile != $oldFile){
+						unlink($oldFile);
+					}
+						
+				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
+					
+				//Заявка към базата данни за Update-ване на ред
+				$sql = "UPDATE `appstoredb`.`projects` SET `Title` = '$updateProjectTitle', `Description` = '$updateProjectDescription', `DateModified` = '$projModDate', `FileLocation` = '$projName' WHERE Id = '$projId';"; 
+				$stmt = $conn->prepare($sql);
+				$stmt->execute();
+								
+				echo "<h1 class='success'> CONGRATS you just updated your project!</h1>";
+			} else {
+				echo "<h1 class='error'>Sorry, there was an error updating your project.</h1>";
+			}
+		}
+	}
 	// затваряне на връзката с базата
     $conn = null;
 ?>
-<h1> Successfully updated information about your project!</h1>
+
 <button type="button" onclick="Home()"> Head back to Home screen </button>
 </body>
 </html>

@@ -101,9 +101,6 @@ if (isset($_SESSION["id"]) == false) {
 					$sql = "INSERT INTO `Projects` (GroupId,`Title`,`Description`,`DateCreated`,`DateModified`,FileLocation) VALUES ('$grpId','$_POST[projectTitle]','$_POST[projectDescription]','$_POST[projectDate]','$_POST[projectDate]','$projName')";
 					$sth = $conn->prepare($sql);
 					$sth->execute();
-					if ($targetFile != $oldfile){
-						unlink($oldfile);
-					}
 					echo "<h1 class='success'> CONGRATS you just uploaded your project</h1>";
 				} else {
 					echo "<h1 class='error'>Sorry, there was an error uploading your file.</h1>";
@@ -152,26 +149,14 @@ if (isset($_SESSION["id"]) == false) {
 	  if ($project['GroupId'] == $_SESSION['group']){
 			$projectTitle = $project['Title'];
 			$projectDescription = $project['Description'];
-			/* Това съм го закоментирал защото не ми дава да закоментирам нещата за файла
+
 		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
-				<form id='updateForm' action='update_project.php method='post' enctype='multipart/form-data'>
+				<form id='updateForm' action='update_project.php' method='post' enctype='multipart/form-data'>
 					<label for='modProjectTitle'>Project Title</label>
 	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
 					
 					<label for='modProjectFile'>Upload new project</label>
-	  				<input type='file' id='modProjectFile' name='modProjectFile'/>
-					
-					<label for='modProjectDescription'> Project Description</label>
-	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$projectDescription </textarea>
-					
-	  				<input type='submit' value='Update' />
-				</form> ";
-				*/
-
-		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
-				<form id='updateForm' action='update_project.php' method='post' >
-					<label for='modProjectTitle'>Project Title</label>
-	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
+	  				<input type='file' id='modProjectFile' name='modProjectFile' required/>
 					
 					<label for='modProjectDescription'> Project Description</label>
 	  				<textarea id='modProjectDescription' name='modProjectDescription' required>$projectDescription </textarea>
@@ -180,8 +165,8 @@ if (isset($_SESSION["id"]) == false) {
 					
 	  				<input type='submit' value='Update' />
 				</form> ";
-
 			}
+			
 	echo "<h3> Comment Section </h3>";
 	$usr = $_SESSION["admin"];
 	if($usr) {
