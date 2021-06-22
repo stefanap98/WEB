@@ -21,6 +21,7 @@
 
   <!-- Вмъкване на външен javascript файл -->
   <script src="javascript/index.js?<?php echo time(); ?>"></script>
+  <script src="javascript/update_validation.js?<?php echo time(); ?>"></script>
 </head>
 
 <body>
@@ -151,6 +152,7 @@ if (isset($_SESSION["id"]) == false) {
 			$projectDescription = $project['Description'];
 
 		  echo "<button id='updateButton' onclick='toggleFormDisplay()'>Update Project</button>
+				<div id = 'error_msg'></div>
 				<form id='updateForm' action='update_project.php' method='post' enctype='multipart/form-data'>
 					<label for='modProjectTitle'>Project Title</label>
 	  				<input type='text' id='modProjectTitle' name='modProjectTitle' value='$projectTitle' required/>
@@ -163,7 +165,7 @@ if (isset($_SESSION["id"]) == false) {
 					
 					<input type='hidden' name='modProjId' value='$projId'>
 					
-	  				<input type='submit' value='Update' />
+	  				<input type='submit' value='Update'  onclick='return validate()' />
 				</form> ";
 			}
 			
@@ -198,11 +200,11 @@ if (isset($_SESSION["id"]) == false) {
 			}
 		}
 		echo "</h1>";
-		
-		echo  "<form action='comments.php' method='post'>
+		echo  "<div id='error_msg_comm'></div>
+			  <form action='comments.php' method='post'>
 				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here [Note: atleast 5  long!]' required></textarea> 
 				<input type='hidden' id='projectId' name ='projectId' value='$projId'>
-				<input type='submit'>
+				<input type='submit' onclick = 'return validate_comm()'>
 			  </form>
 			  </div>";
 		

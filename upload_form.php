@@ -24,7 +24,7 @@
   <script src="javascript/upload_validation.js?<?php echo time(); ?>"></script>
 </head>
 
-<body>
+<body >
 
   <?php  
 
@@ -39,6 +39,7 @@
 	}
   ?>
 	<!-- Post заявка със задаване на проекта и информация за нея -->
+    <div id = "error_msg"></div>
 	<form action="upload.php" id="reg_form" method="post" enctype="multipart/form-data">        
 	  <label for="projectTitle">Project Title</label>
 	  <input type="text" id="projectTitle" name="projectTitle" required />
@@ -48,8 +49,7 @@
 	  
 	  <label for="projectDescription"> Project Description</label>
 	  <textarea id="projectDescription" name="projectDescription" required> </textarea>
-	  
-	  <input type="submit"/>
+	  <input type="submit" onclick="return validate()"/>
 	</form>
 </body>
 </html>
