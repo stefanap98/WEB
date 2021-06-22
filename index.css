@@ -49,7 +49,7 @@ h1, h3, p {
   text-decoration: underline;
 }
 
-form, button{
+form, button, #nameGen{
   margin: 10px;
   padding: 7px;
   background-color: rgb(36, 39, 41);
@@ -151,6 +151,10 @@ input[type="submit"]:hover, button:hover, input[type="button"]:hover{
 .error {
   color:red;
   font-size: 20px;
+}
+
+.success {
+	color: rgb(8, 242, 0);
 }
 
 #loginForm {

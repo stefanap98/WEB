@@ -33,6 +33,10 @@ javascript/index.js - Добавяне на функционалност към 
 
 javascript/sorting.js - Функции за търсене и сортировка на проектите
 
+javascript/update_validation.js - Файл за валидация на update форма
+
+javascript/upload_validation.js - Файл за валидация на upload форма
+
 csv/projects.csv - Csv файл с информация необходима за създаване на студентските логини със синтаксис : group_id,{fac_num,}+
 
 csv/teachers.csv - Csv файл с информация необходима за създаване на администраторските логини със синтаксис : username{,password}?

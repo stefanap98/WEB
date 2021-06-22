@@ -48,7 +48,7 @@
 	  <input type="file" id="projectFile" name="projectFile" required />
 	  
 	  <label for="projectDescription"> Project Description</label>
-	  <textarea id="projectDescription" name="projectDescription" required> </textarea>
+	  <textarea id="projectDescription" name="projectDescription" required></textarea>
 	  <input type="submit" onclick="return validate()"/>
 	</form>
 </body>

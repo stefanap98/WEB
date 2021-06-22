@@ -2,23 +2,24 @@
   session_start();
   
   $host = "localhost";
-  $database = "appstoredb";
   $user = "root";
   $password = "";
-  # MySQL with PDO_MYSQL  
-  $db = new PDO("mysql:host=$host;dbname=$database", $user, $password);
 
+try {
+  $conn = new PDO("mysql:host=$host", $user, $password);
+  $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+  $sql = "CREATE DATABASE IF NOT EXISTS appstoredb;";
+  $conn->exec($sql);
+} catch(PDOException $e) {
+  echo $sql . "<br>" . $e->getMessage();
+}
+
+  $database = "appstoredb";
   $query = file_get_contents("MYSQLQuery.sql");
 
-  $stmt = $db->prepare($query);
+  $stmt = $conn->prepare($query);
   $stmt->execute();
-  
-/*Проверка дали се е изпълнил sql файла
-  if ($stmt->execute()) {
-       echo "Success";
-  } else { 
-       echo "Fail";
-  }*/
+  $conn = null;
 ?>
 <!DOCTYPE html>
 <html>

@@ -22,6 +22,7 @@
 </head>
 <body>
   <button type="button" onclick="Home()"> Head back to Home screen </button>
+  <div id="nameGen">
 <?php
 class profile
 {
@@ -38,11 +39,11 @@ class profile
   public function sendToDb($conn, $safeguard)
   {
     if (array_key_exists($this->name,  $safeguard) == true)
-      echo "<p>Username $this->name exist already</p>";
+      echo "<p class='error'>Username $this->name exist already</p>";
     else {
       $sql = "INSERT INTO appstoredb.Users (Username, GroupId,Email, Password ,IsTeacher) VALUES ('$this->name','$this->team', '', '$this->pass',$this->admin)";
       if ($conn->query($sql)) {
-        echo "<p>" . $sql . "</p>";
+        echo "<p class='success'> User " . $this->name . " was created !</p>";
       } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
       }
@@ -184,5 +185,6 @@ function genTeachers($fname)
 genLogins("csv/projects.csv");
 genTeachers("csv/teachers.csv");
 ?>
+</div>
 </body>
 </html>
