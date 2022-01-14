@@ -41,7 +41,7 @@ class profile
     if (array_key_exists($this->name,  $safeguard) == true)
       echo "<p class='error'>Username $this->name exist already</p>";
     else {
-      $sql = "INSERT INTO appstoredb.Users (Username, GroupId,Email, Password ,IsTeacher) VALUES ('$this->name','$this->team', '', '$this->pass',$this->admin)";
+      $sql = "INSERT INTO Users (Username, GroupId,Email, Password ,IsTeacher) VALUES ('$this->name','$this->team', '', '$this->pass',$this->admin)";
       if ($conn->query($sql)) {
         echo "<p class='success'> User " . $this->name . " was created !</p>";
       } else {
@@ -90,7 +90,7 @@ function getAllNames($conn)
 {
   $arr = array();
 
-  $sql = "SELECT Username FROM appstoredb.Users ";
+  $sql = "SELECT Username FROM Users ";
   $tmp = $conn->query($sql);
   $result = $tmp->fetchAll();
   foreach ($result as $nm) {

@@ -1,10 +1,10 @@
 <?php   
   session_start();
-  
-  $host = "localhost";
-  $user = "root";
-  $password = "";
-
+  require 'db_setup.php';
+  $host = $serverName;
+  //$user = "root";
+  $password = $pass;
+/*
 try {
   $conn = new PDO("mysql:host=$host", $user, $password);
   $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -14,12 +14,12 @@ try {
   echo $sql . "<br>" . $e->getMessage();
 }
 
-  $database = "appstoredb";
+  //$database = "appstoredb";
   $query = file_get_contents("MYSQLQuery.sql");
 
   $stmt = $conn->prepare($query);
   $stmt->execute();
-  $conn = null;
+  $conn = null;*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -48,7 +48,6 @@ try {
 <?php
 $message = "";
 if (count($_POST) > 0) {
-    require 'db_setup.php';
     try {
       $conn = new PDO(
         "mysql:host=$serverName;dbname=$database;",
@@ -58,7 +57,7 @@ if (count($_POST) > 0) {
     } catch (PDOException $e) {
       die("Error connecting to SQL Server: " . $e->getMessage());
     }
-    $sql = "SELECT * FROM appstoredb.Users WHERE Username='" . htmlspecialchars($_POST["username"]) . "' and Password = '" . htmlspecialchars($_POST["password"]) . "'";
+    $sql = "SELECT * FROM Users WHERE Username='" . htmlspecialchars($_POST["username"]) . "' and Password = '" . htmlspecialchars($_POST["password"]) . "'";
     $result = $conn->query($sql);
     $id = $result->fetch();
     if (is_array($id)) {

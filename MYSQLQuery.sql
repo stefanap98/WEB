@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS appstoredb;
+--CREATE DATABASE IF NOT EXISTS appstoredb;
 Use appstoredb;
 
 CREATE TABLE IF NOT EXISTS Projects  (
@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS Projects  (
   `Description` nvarchar(4000) NOT NULL,
   DateCreated datetime NOT NULL,
   DateModified datetime NOT NULL,
-  FileLocation nvarchar(4000)
+  FileLocation nvarchar(4000),
+  Grade int UNSIGNED
 );
 
 CREATE TABLE IF NOT EXISTS Users (

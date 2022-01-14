@@ -57,7 +57,7 @@
       die("Error connecting to SQL Server: " . $e->getMessage());
     }
     // избираме id, заглавие и описание на проекта от базата
-    $sql = "SELECT id ,groupid ,datemodified, title FROM appstoredb.Projects  ORDER BY datemodified ASC ";
+    $sql = "SELECT id ,groupid ,datemodified, title FROM Projects  ORDER BY datemodified ASC ";
     $result = $conn->query($sql);
     $projects = $result->fetchAll();
     $onetime_echo =1;

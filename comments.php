@@ -9,6 +9,7 @@ if (isset($_SESSION["admin"]) == true) {
   $projId = $_POST["projectId"];
   $usrId = $_SESSION["id"];
   $date = date('Y-m-d H:i:s');
+  $grade = $_POST["grade"];
   
   require 'db_setup.php';
   try {
@@ -18,7 +19,7 @@ if (isset($_SESSION["admin"]) == true) {
 		$pass
 	  );
 	
-	$sql = "INSERT INTO `comments` (`ProjectId`,`UserId`,`Text`,`Timestamp`) VALUES ('$projId','$usrId','$comment','$date')";
+	$sql = "INSERT INTO `comments` (`ProjectId`,`UserId`,`Text`,`Timestamp`) VALUES ('$projId','$usrId','$grade','$date');UPDATE `projects` SET `Grade` ='$grade' WHERE (`Id` = '$projId');"; 
 	$sth = $conn->prepare($sql);
 	$sth->execute();
 

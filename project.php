@@ -49,7 +49,7 @@ if (isset($_SESSION["id"]) == false) {
 	    }
 		//=========================
 		$idd = $_GET["id"];
-		$sql = "SELECT * FROM appstoredb.Projects WHERE id = $idd";
+		$sql = "SELECT * FROM Projects WHERE id = $idd";
 		$sth = $conn->query($sql);
 		$project = $sth->fetch(); //object
 
@@ -110,7 +110,7 @@ if (isset($_SESSION["id"]) == false) {
 		} 
 		$projectName = $_POST['newProjectTitle'];
 		$projectDescr= $_POST['newProjectDescription'];
-        $sql = "UPDATE appstoredb.Projects SET Title='$projectName' Description='$projectDescr' WHERE Id='$idd'";
+        $sql = "UPDATE Projects SET Title='$projectName' Description='$projectDescr' WHERE Id='$idd'";
 	    $result = $conn->query($sql);
 	    $id = $result->fetch();
 		$conn = null;
@@ -124,14 +124,14 @@ if (isset($_SESSION["id"]) == false) {
 		  $pass
 	  );
 
-	  $sql = "SELECT * FROM appstoredb.Projects WHERE id = :id";
+	  $sql = "SELECT * FROM Projects WHERE id = :id";
 	  $sth = $conn->prepare($sql);
 	  $sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
 	  $project = $sth->fetch(); //object
 
 	  //тука извличаме всички коментари от базата
 	  $projId = $_GET["id"];
-	  $commentsQuery = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $projId ";
+	  $commentsQuery = "SELECT * FROM Comments WHERE ProjectId = $projId ";
 	  $sth = $conn->prepare($commentsQuery);
 	  $sth->execute();
 	  $allComments = $sth->fetchAll(); //обект с всички коментари по дадения проект
@@ -141,6 +141,7 @@ if (isset($_SESSION["id"]) == false) {
 		  <h1>" . $project['Title'] . "</h1>
 		  <h3 class='commentHeader'> Project created: <time>" . $project ['DateCreated'] . "</time> </h3>
 		  <h3 class='commentHeader'> Project modified: <time>" . $project['DateModified'] . "</time> </h3>
+		  <h3 class='grade'>Grade: " . $project['Grade'] . "</h3>
 		  <div class='comment'>
 		  <h3 class='commentHeader'> Project Description</h3> <p class='commentBody'>" . $project['Description'] . "</p>
 		  </div>
@@ -175,14 +176,14 @@ if (isset($_SESSION["id"]) == false) {
 		//Опция за показване на емайлите, ако съществува 
 		//Първо извличаме GroupId на проекта
 		$projId = $_GET["id"];
-	    $groupIdQuery = "SELECT GroupId FROM appstoredb.Projects Where Id=$projId; ";
+	    $groupIdQuery = "SELECT GroupId FROM Projects Where Id=$projId; ";
 	    $sth = $conn->prepare($groupIdQuery);
 	    $sth->execute();
 	    $groupId = $sth->fetch();
 		$grpId = $groupId['GroupId'];
 
 		//След това с този GroupId извличаме емайлите на хората
-		$emailQuery = "SELECT Email FROM appstoredb.Users Where GroupId = $grpId";
+		$emailQuery = "SELECT Email FROM Users Where GroupId = $grpId";
 		$sth = $conn->prepare($emailQuery);
 		$sth->execute();
 		$emails = $sth->fetchAll();
@@ -202,13 +203,15 @@ if (isset($_SESSION["id"]) == false) {
 		echo "</h1>";
 		echo  "<div id='error_msg_comm'></div>
 			  <form action='comments.php' method='post'>
+				<label class='grade' for='grade'>Give grade: (between 2 and 6):</label>
+				<input type='number' id='grade' name='grade' min='2' max='6' >
 				<textarea id='comment' name='comment' rows='4' cols='50' placeholder='Type comment here [Note: atleast 5  long!]' required></textarea> 
 				<input type='hidden' id='projectId' name ='projectId' value='$projId'>
 				<input type='submit' onclick = 'return validate_comm()'>
 			  </form>
 			  </div>";
 		
-		$commentsQueryy = "SELECT * FROM appstoredb.Comments WHERE ProjectId = $projId;";
+		$commentsQueryy = "SELECT * FROM Comments WHERE ProjectId = $projId;";
 		$sth = $conn->prepare($commentsQueryy);
 		$sth->execute(array("id" => $_GET["id"])); //Така е написано за да се избегне SQL injection
 		$userInfo = $sth->fetchAll();
@@ -217,7 +220,7 @@ if (isset($_SESSION["id"]) == false) {
 		$userId = $comm["UserId"]; //променлива за това кой е писал коментара
 
 		// цялата информация за коментарите от таблицата
-		$userQuery="SELECT Username FROM appstoredb.Users WHERE ID = $userId";
+		$userQuery="SELECT Username FROM Users WHERE ID = $userId";
 		$sth = $conn->prepare($userQuery);
 		$sth->execute();
 		$user = $sth->fetch();

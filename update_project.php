@@ -46,7 +46,7 @@
 	$projModDate = date('Y-m-d H:i:s', strtotime('+1 hour'));
 	
 	//проверка дали съществува такъв проект
-	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='$updateProjectTitle' And Id!=$projId";
+	$sql = "SELECT COUNT(1) FROM projects WHERE Title='$updateProjectTitle' And Id!=$projId";
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
 	$result = $stmt->fetchAll();
@@ -56,7 +56,7 @@
 		} else {
 		
 		//Заявка към базата за извличане на името и директорията на стария файл
-		$sql = "Select GroupId, FileLocation From appstoredb.projects WHERE Id = '$projId';";
+		$sql = "Select GroupId, FileLocation From projects WHERE Id = '$projId';";
 		$stmt = $conn->prepare($sql);
 		$stmt->execute();
 		$result = $stmt->fetch();
@@ -98,7 +98,7 @@
 				echo "<h1 class='success'>The file ". $projName . " has been uploaded.</h1>";
 					
 				//Заявка към базата данни за Update-ване на ред
-				$sql = "UPDATE `appstoredb`.`projects` SET `Title` = '$updateProjectTitle', `Description` = '$updateProjectDescription', `DateModified` = '$projModDate', `FileLocation` = '$projName' WHERE Id = '$projId';"; 
+				$sql = "UPDATE `projects` SET `Title` = '$updateProjectTitle', `Description` = '$updateProjectDescription', `DateModified` = '$projModDate', `FileLocation` = '$projName' WHERE Id = '$projId';"; 
 				$stmt = $conn->prepare($sql);
 				$stmt->execute();
 								

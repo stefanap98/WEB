@@ -50,7 +50,7 @@ if (count($_POST) > 0) {
         }
         $idd = $_SESSION["id"];
         echo $idd;
-        $sql = "UPDATE appstoredb.Users SET Email='$userEmail' WHERE Id='$idd'";
+        $sql = "UPDATE Users SET Email='$userEmail' WHERE Id='$idd'";
         $conn->prepare($sql)->execute();
         $_SESSION["mail"] = $userEmail ;
         $conn = null;

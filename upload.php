@@ -44,7 +44,7 @@
 	//проверка дали съществува такъв проект
 	$prjTitle = htmlspecialchars($_POST["projectTitle"]);
 	$prjDesc = htmlspecialchars($_POST["projectDescription"]);
-	$sql = "SELECT COUNT(1) FROM appstoredb.projects WHERE Title='".$prjTitle."'"; //тука може да се провери и името на файла дали съществува в базата
+	$sql = "SELECT COUNT(1) FROM projects WHERE Title='".$prjTitle."'"; //тука може да се провери и името на файла дали съществува в базата
 	$stmt = $conn->prepare($sql);
 	$stmt->execute();
 	$result = $stmt->fetchAll();
